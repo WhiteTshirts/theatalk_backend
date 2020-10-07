@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ChatTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "should be valid" do
+    assert true
+  end
 end
