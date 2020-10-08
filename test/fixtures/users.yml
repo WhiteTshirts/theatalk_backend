@@ -4,8 +4,10 @@ one:
   name: MyString
   profile: MyString
   room_id: 1
+  id: 1
 
 two:
   name: MyString
   profile: MyString
   room_id: 1
+  id: 2
