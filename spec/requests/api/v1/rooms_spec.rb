@@ -1,6 +1,7 @@
 #rikuiwasaki
 
 require 'rails_helper'
+
 describe 'RoomAPI' do
   it '全てのRoomを取得' do
     FactoryBot.create_list(:room_create,10)
@@ -35,4 +36,5 @@ describe 'RoomAPI' do
   end
 
 end
+
 #rikuiwasaki

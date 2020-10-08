@@ -2,10 +2,8 @@
 
 one:
   user_id: 1
-  room_id: 1
-  text: "test"
+  follow_id: 1
 
 two:
   user_id: 1
-  room_id: 1
-  text: MyString
+  follow_id: 2

@@ -1,14 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
-  password_digest: MyString
+  name: yamada
   profile: MyString
   room_id: 1
+  id: 1
 
 two:
-  id: 1
-  name: test_user_1
-  password_digest: MyString
+  name: tanaka
   profile: MyString
   room_id: 1
+  id: 2
