@@ -5,5 +5,5 @@ one:
   tag_id: 1
 
 two:
-  room_id: 1
-  tag_id: 1
+  room_id: 2
+  tag_id: 2
