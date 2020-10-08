@@ -2,6 +2,8 @@
 
 one:
   name: MyString
+  id: 1
 
 two:
   name: MyString
+  id: 2
