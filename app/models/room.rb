@@ -1,5 +1,6 @@
 class Room < ApplicationRecord
     has_many :chats #rikuiwasaki
+    has_many :rooms_tags
     #Kyosuke Yokota
     has_and_belongs_to_many :tags
 
