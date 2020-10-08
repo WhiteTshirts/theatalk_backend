@@ -2,8 +2,8 @@
 
 one:
   user_id: 1
-  tag_id: 1
+  follow_id: 1
 
 two:
   user_id: 1
-  tag_id: 1
+  follow_id: 2
