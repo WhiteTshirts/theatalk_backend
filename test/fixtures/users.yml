@@ -2,12 +2,13 @@
 
 one:
   name: MyString
-  password: MyString
+  password_digest: MyString
   profile: MyString
   room_id: 1
 
 two:
-  name: MyString
-  password: MyString
+  id: 1
+  name: test_user_1
+  password_digest: MyString
   profile: MyString
   room_id: 1
