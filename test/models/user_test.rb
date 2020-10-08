@@ -1,25 +1,23 @@
 require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
-
   def setup
     @user1 = User.new(name: "hiranuma", password: "1234")
     @user2 = User.new(name: "asada", password: "1234")
-    print @user
-    # @user1.follow(@user2)
-    # @user = User.find_by(name: "hiranuma")
+    @user3 = User.new(name: "yamada", password: "1234")
+    @user4 = users(:one)
+  end
+
+  test "the same name" do
+    assert_not @user3.valid?
   end
 
   test "should be valid" do
     assert @user1.valid?
     assert @user2.valid?
-    # assert @user.valid?
   end
 
-  # test "can be follow?" do
-  #   assert @user1.following?(@user2)
-  # end
+  test "dont follow" do
+    assert_not @user1.following?(@user2)
+  end
 end
