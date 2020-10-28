@@ -1,8 +1,3 @@
-'''
-  Author: Hiranuma Tomoyuki
-  Date: 20200907
-'''
-
 class Relationship < ApplicationRecord
   belongs_to :user
   belongs_to :follow, class_name: 'User'

@@ -1,9 +1,3 @@
-'''
-  author: Kyosuke Yokota
-  Date: 20200904
-'''
-
-
 module Api
     module V1
         class UsersController < ApplicationController
@@ -11,13 +5,11 @@ module Api
           before_action :set_user, only: [:show, :update]
           
             # ユーザ一覧を取得
-            #rikuiwasaki
             def index 
                 users = User.where(room_id: params[:room_id]).order(updated_at: :desc).select(:id,:name,:profile,:room_id,:created_at,:updated_at)
 
                 render status: 200, json: { status: 'SUCCESS', message: 'Loaded posts', data: { users: users } }
             end
-            #rikuiwasaki
             def show
               user = User.find(params[:id]).select(:id,:name,:profile,:room_id,:created_at,:updated_at)
               render status: 200, json: { status: 'SUCCESS', message: 'Loaded posts', data: { user: @user } }
@@ -26,10 +18,8 @@ module Api
             def create
                 @user = User.new(user_params)
                 if @user.save
-                  ## Hiranuma
                   jwt_token = encode(@user.id)
                   response.headers['X-Authentication-Token'] = jwt_token
-                  ## Hiranuma
                   render status:201, json: { status: 'SUCCESS', data: { user: @user }, token: jwt_token }
                 else
                   render status:409, json:{status:'ERROR',error: @user.errors}

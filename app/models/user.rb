@@ -1,8 +1,3 @@
-'''
-  Author: Hiranuma Tomoyuki
-  Date: 20200907
-'''
-
 class User < ApplicationRecord
 	has_secure_password
 	has_many :chats

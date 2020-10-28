@@ -1,8 +1,3 @@
-'''
-	Author: Hiranuma Tomoyuki
-	Date: 20200907
-'''
-
 module Api
   module V1
     class RelationshipsController < ApplicationController
@@ -12,18 +7,18 @@ module Api
 
       def index
         @followings = @current_user.followings
-        render status:200, json: { status: "SUCCESS", data: { users: @followings }}
+        render status: 200, json: { data: { users: @followings } }
       end
 
       def create
         if @user == nil 
-          render status:500, json { status: 'ERROR', data { error: "not exist" } }
+          render status: 500
         else 
           @following = @current_user.follow(@user)
           if @following.save
-            render status:201, json: { status: 'SUCCESS' }
+            render status: 201
           else
-            render status:500, json: { status: 'ERROR', data: { error: @following.errors } }
+            render status: 500
           end
         end
       end
@@ -31,10 +26,15 @@ module Api
       def destroy
         @following = @current_user.unfollow(@user)
         if @following.destroy
-          render status:204, json: { status: 'SUCCESS' }
+          render status:204
         else
-          render status:500, json: { status: 'ERROR', data: { error: @following.errors } }
+          render status:500
         end
+      end
+
+      def get_follow_numbers
+        @followings = User.find_by(id: params[:id]).followings
+        render status: 200, json: { data: { user: @followings.length } }
       end
 
       private
