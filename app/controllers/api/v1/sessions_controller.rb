@@ -8,9 +8,9 @@ module Api
         if @current_user && @current_user.authenticate(user_params[:password])
           jwt_token = encode(@current_user.id)
           response.headers['X-Authentication-Token'] = jwt_token
-          render status:200, json: { status: "SUCCESS", data: { user: @current_user } }
+          render status:200, json: { data: { user: @current_user } }
         else
-          render status:401, json: { status: 'ERROR' ,error: "Unauthorized " }
+          render status:401
         end
       end
       

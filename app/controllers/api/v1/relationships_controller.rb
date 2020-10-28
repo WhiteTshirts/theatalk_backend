@@ -30,9 +30,9 @@ module Api
         if @following.destroy
           @current_user.update_attributes(follows: @current_user.follows - 1)
           @user.update_attributes(followers: @user.followers - 1)
-          render status:204
+          render status: 204
         else
-          render status:500
+          render status: 500
         end
       end
 

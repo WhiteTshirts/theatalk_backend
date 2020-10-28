@@ -6,13 +6,13 @@ module Api
           
           # ユーザ一覧を取得
           def index 
-              users = User.where(room_id: params[:room_id]).order(updated_at: :desc).select(:id,:name,:profile,:room_id,:created_at,:updated_at)
-              render status: 200, json: { status: 'SUCCESS', message: 'Loaded posts', data: { users: users } }
+              @users = User.where(room_id: params[:room_id]).order(updated_at: :desc).select(:id,:name,:profile,:room_id,:created_at,:updated_at)
+              render status: 200, json: { data: { users: @users } }
           end
 
           def show
-            user = User.find(params[:id]).select(:id,:name,:profile,:room_id,:created_at,:updated_at)
-            render status: 200, json: { status: 'SUCCESS', message: 'Loaded posts', data: { user: @user } }
+            @user = User.find(params[:id]).select(:id,:name,:profile,:room_id,:created_at,:updated_at)
+            render status: 200, json: { data: { user: @user } }
           end
           # ユーザ登録
           def create
@@ -20,17 +20,17 @@ module Api
               if @user.save
                 jwt_token = encode(@user.id)
                 response.headers['X-Authentication-Token'] = jwt_token
-                render status:201, json: { status: 'SUCCESS', data: { user: @user }, token: jwt_token }
+                render status:201, json: { data: { user: @user } }
               else
-                render status:409, json:{status:'ERROR',error: @user.errors}
+                render status:409
               end
           end
 
           def update
               if @current_user.update_attributes(user_params)
-                  render status:200, json: { status: 'SUCCESS', message: 'Updated the post', data: { user: @user } }
+                  render status:200, json: { data: { user: @user } }
                 else
-                  render status:500, json: { status: 'ERROR', message: 'Not updated', data: { error: @user.errors } }
+                  render status:500, json: { data: { error: @user.errors } }
               end
           end
 
