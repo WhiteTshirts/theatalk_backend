@@ -16,31 +16,38 @@ module Api
 			end
 			#Kyosuke Yokota
 			def create
+				pre_room_id = @current_user.room_id
 				if @current_user.update_attribute(:room_id, room_id_params[:room_id])
-					room = Room.find_by(id: room_id_params[:room_id])
-					room.increment!(:viewer)
-					render status:201, json: {  data: { user: @current_user } }
+					if pre_room_id != room_id_params[:room_id]
+					  room = Room.find_by(id: room_id_params[:room_id])
+						room.increment!(:viewer)
+						render status:201, json: {  data: { }}
+					else
+						render status:200, json:{ data:{}}
+					end
+
 				else
 					render status:500, json: {  data: { error: @current_user.errors } }
 				end
 			end
-
 			def leave
-				room_ = @current_user.room_id
+				room_id = @current_user.room_id
 				if @current_user.update_attribute(:room_id, nil)
-					room = Room.find_by(id: room_)
-					room.increment!(:viewer,-1)
-					render status:204, json: { }
+					if room_id.nil?
+						render status:404, json: { data: {}}
+					else
+					  room = Room.find_by(id: room_id)
+					  room.increment!(:viewer,-1)
+						render status:204, json: { data:{}}
+					end
 				else
 					render status:500, json: { data: { error: @current_user.errors } }
 				end
 			end
-			
 			private
 			def room_id_params
 				params.require(:user).permit(:room_id)
 			end
-
 		end
 	end
 end
