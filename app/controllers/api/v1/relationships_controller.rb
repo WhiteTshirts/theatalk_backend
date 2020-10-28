@@ -36,10 +36,24 @@ module Api
         end
       end
 
+      def follow_numbers
+        @user = User.find_by(id: user_params[:id])
+        render status: 200, json: { data: { user: { user_id: @user.id, follows: @user.follow_number, followers: @user.follower_number } } }
+      end
+
+      def follow_index
+        @followings = User.find_by(id: user_params[:id]).followings
+        render status: 200, json: { data: { users: @followings } }
+      end 
+
       private
 
       def set_user
         @user = User.find_by(id: params[:follow_id])
+      end
+
+      def user_params
+        params.require(:user).permit(:id)
       end
     end
   end
