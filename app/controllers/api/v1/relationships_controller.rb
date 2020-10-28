@@ -36,16 +36,6 @@ module Api
         end
       end
 
-      def get_follow_numbers
-        @follow_numbers = User.find_by(id: params[:id]).follows
-        render status: 200, json: { data: { follow_numbers: @follow_numbers } }
-      end
-
-      def get_followers_numbers
-        @follower_numbers = User.find_by(id: params[:id]).followers
-        render status: 200, json: { data: { follower_numbers: @follower_numbers} }
-      end
-
       private
 
       def set_user
