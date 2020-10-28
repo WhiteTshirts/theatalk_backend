@@ -10,7 +10,7 @@ module Api
 			# ルームに入室しているユーザ一覧を取得(入室した順番に取得)
 
 			def index 
-				users = User.where(room_id: @current_user.room_id).order(updated_at: :desc)#rikuiwasaki
+				users = User.where(room_id: @current_user.room_id).order(updated_at: :desc)
 				render status:200, json: { message: 'Loaded posts', data: { users: users } }
 			end
 			def create
