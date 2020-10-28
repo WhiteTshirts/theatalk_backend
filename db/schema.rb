@@ -10,7 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+<<<<<<< HEAD
 ActiveRecord::Schema.define(version: 20201028111543) do
+=======
+ActiveRecord::Schema.define(version: 20201028080837) do
+>>>>>>> b43d8daba24a2dd164723dfd4ac19caae46fa806
 
   create_table "chats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "user_id"
@@ -39,6 +43,7 @@ ActiveRecord::Schema.define(version: 20201028111543) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "youtube_id"
+    t.integer "viewer", default: 0
   end
 
   create_table "rooms_tags", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|

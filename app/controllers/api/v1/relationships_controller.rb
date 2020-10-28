@@ -37,12 +37,13 @@ module Api
       end
 
       def follow_numbers
-        @user = User.find_by(id: user_params[:id])
-        render status: 200, json: { data: { user: { user_id: @user.id, follows: @user.follow_number, followers: @user.follower_number } } }
+        @user = User.find(user_params[:id])
+        render status: 200, json: { data: { user: { id: @user.id, follow_number: @user.follow_number, follower_number: @user.follower_number } } }
       end
 
       def follow_index
-        @followings = User.find_by(id: user_params[:id]).followings
+        @followings = User.find(user_params[:id]).followings
+        print(@followings)
         render status: 200, json: { data: { users: @followings } }
       end 
 
