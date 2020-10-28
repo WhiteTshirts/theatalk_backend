@@ -16,7 +16,7 @@ module Api
           end
           # ユーザ登録
           def create
-              @user = User.new(user_params)
+              @user = User.new(user_params, follows: 0, followers: 0)
               if @user.save
                 jwt_token = encode(@user.id)
                 response.headers['X-Authentication-Token'] = jwt_token

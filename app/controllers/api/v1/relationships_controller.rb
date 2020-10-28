@@ -16,6 +16,8 @@ module Api
         else 
           @following = @current_user.follow(@user)
           if @following.save
+            @current_user.update_attributes(follows: @current_user.follows + 1)
+            @user.update_attributes(followers: @user.followers + 1)
             render status: 201
           else
             render status: 500
@@ -26,6 +28,8 @@ module Api
       def destroy
         @following = @current_user.unfollow(@user)
         if @following.destroy
+          @current_user.update_attributes(follows: @current_user.follows - 1)
+          @user.update_attributes(followers: @user.followers - 1)
           render status:204
         else
           render status:500
@@ -33,8 +37,13 @@ module Api
       end
 
       def get_follow_numbers
-        @followings = User.find_by(id: params[:id]).followings
-        render status: 200, json: { data: { user: @followings.length } }
+        @follow_numbers = User.find_by(id: params[:id]).follows
+        render status: 200, json: { data: { follow_numbers: @follow_numbers } }
+      end
+
+      def get_followers_numbers
+        @follower_numbers = User.find_by(id: params[:id]).followers
+        render status: 200, json: { data: { follower_numbers: @follower_numbers} }
       end
 
       private

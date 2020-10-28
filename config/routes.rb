@@ -22,6 +22,7 @@ Rails.application.routes.draw do
       resources :relationships do
         collection do
           get :get_follow_numbers
+          get :get_follower_numbers
         end
       end
       resources :user_room_tags, only:[:show]
