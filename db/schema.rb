@@ -39,7 +39,7 @@ ActiveRecord::Schema.define(version: 20201028080837) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "youtube_id"
-    t.integer "viewer"
+    t.integer "viewer", default: 0
   end
 
   create_table "rooms_tags", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
