@@ -1,7 +1,3 @@
-'''
-	Author: Hiranuma Tomoyuki
-	Date: 20200907
-'''
 
 module Api
 	module V1
