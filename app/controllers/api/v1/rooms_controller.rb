@@ -14,6 +14,7 @@ module Api
             def create
                 room_info = room_params
                 room_info[:admin_id] = @current_user.id
+                room_info[:viewer] = 1
                 room = Room.new(room_info)
                 if room.save && @current_user.update_attribute(:room_id, room.id)
                     # save したら、 RoomsTagsと紐付けを行う

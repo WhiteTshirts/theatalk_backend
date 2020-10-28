@@ -17,6 +17,8 @@ module Api
 			#Kyosuke Yokota
 			def create
 				if @current_user.update_attribute(:room_id, room_id_params[:room_id])
+					room = Room.find_by(room_id: room_id_params.room_id)
+					room.increment!(:viewer)
 					render status:201, json: { status: "SUCCESS", data: { user: @current_user } }
 				else
 					render status:500, json: { status: "ERROR", data: { error: @current_user.errors } }
@@ -25,6 +27,8 @@ module Api
 
 			def leave
 				if @current_user.update_attribute(:room_id, nil)
+					room = Room.find_by(room_id: room_id_params.room_id)
+					room.decrement!(:viewer)
 					render status:204, json: { status: "SUCCESS", data: {} }
 				else
 					render status:500, json: { status: "ERROR", data: { error: @current_user.errors } }
