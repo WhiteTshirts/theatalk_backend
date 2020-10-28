@@ -1,13 +1,13 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
+  name: yamada
   profile: MyString
   room_id: 1
   id: 1
 
 two:
-  name: MyString
+  name: tanaka
   profile: MyString
   room_id: 1
   id: 2
