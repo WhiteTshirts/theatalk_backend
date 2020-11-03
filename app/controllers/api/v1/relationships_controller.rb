@@ -16,8 +16,13 @@ module Api
         else 
           @following = @current_user.follow(@user)
           if @following.save
+<<<<<<< Updated upstream
             @current_user.increment!(:follow_number)
             @user.increment!(:follower_number)
+=======
+            @current_user.update_attributes(follow_number: @current_user.follow_number + 1)
+            @user.update_attributes(follower_number: @user.follower_number + 1)
+>>>>>>> Stashed changes
             render status: 201
           else
             render status: 500
