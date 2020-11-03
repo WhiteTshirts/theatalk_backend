@@ -26,7 +26,7 @@ module Api
                 @room_tag.each do |t|
                     @room_ids.push(t.room_id)
                 end
-
+                
             end
         end
     end

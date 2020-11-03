@@ -19,7 +19,12 @@ Rails.application.routes.draw do
         end
       end
       resources :hello
-      resources :relationships, only: [:create, :destroy, :index]
+      resources :relationships do
+        collection do
+          get :follow_numbers
+          get :follow_index
+        end
+      end
       resources :user_room_tags, only:[:show]
       # get "tags/search_tag" => "tags#search_tag"
       post "login" => "sessions#create"
