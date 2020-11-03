@@ -16,8 +16,8 @@ module Api
         else 
           @following = @current_user.follow(@user)
           if @following.save
-            @current_user.update_attributes(follows: @current_user.follows + 1)
-            @user.update_attributes(followers: @user.followers + 1)
+            @current_user.increment!(:follow_number)
+            @user.increment!(:follower_number)
             render status: 201
           else
             render status: 500
