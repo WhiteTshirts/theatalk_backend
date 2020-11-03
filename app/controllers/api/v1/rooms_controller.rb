@@ -3,7 +3,6 @@ module Api
         class RoomsController < ApplicationController
             include JwtAuthenticator 
             jwt_authenticate except: :index
-            #rikuiwasaki
             before_action :set_room, only: [:update, :show]
 
             def index
@@ -44,11 +43,9 @@ module Api
                 end
             end
             
-            #karakwa
             def show
                 render status:200, json: { status: 'SUCCESS', data: { room: @room } }
             end
-            #karakawa
 
             private
             def set_room
@@ -58,7 +55,6 @@ module Api
             def room_params
                 params.require(:room).permit(:name, :youtube_id, :is_private, :start_time, :password)
             end
-        #rikuiwasaki
         end
     end
 end
