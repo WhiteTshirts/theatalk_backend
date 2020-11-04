@@ -6,8 +6,13 @@ module Api
             before_action :set_room, only: [:update, :show]
 
             def index
-                rooms = Room.all.order(created_at: :desc).where('viewer > ?',0).select(:id, :name, :admin_id, :youtube_id, :password, :is_private,:start_time, :created_at, :updated_at,:viewer)
-                render status:200, json: { status: 'SUCCESS', data: { rooms: rooms } }
+                rooms = []
+                if params[:order] == "users"
+                    rooms = Room.all.order(viewer: :desc).where('viewer > ?',0).select(:id, :name, :admin_id, :youtube_id, :password, :is_private,:start_time, :created_at, :updated_at,:viewer)
+                else
+                    rooms = Room.all.order(created_at: :desc).where('viewer > ?',0).select(:id, :name, :admin_id, :youtube_id, :password, :is_private,:start_time, :created_at, :updated_at,:viewer)
+                end
+                render status: 200, json: { data: { rooms: rooms } }
             end
 
             def create
@@ -25,26 +30,26 @@ module Api
                         room_tag.save
                     end
 
-                    render status:201, json: { status: 'SUCCESS', data: { room: room, user: @current_user } }
+                    render status: 201, json: { data: { room: room, user: @current_user } }
                 else 
-                    render status:500, json: { status: 'ERROR', data: { error: "save error" } }
+                    render status: 500, json: { data: { error: "save error" } }
                 end
             end
             
             def update
                 if @current_user.id == @room.admin_id
                     if @room.update(room_params)
-                        render status:200, json: { status: 'SUCCESS', data: { room: @room } }
+                        render status: 200, json: { data: { room: @room } }
                     else
-                        render status:500, json: { status: 'ERROR', data: { error: @room.erros } }
+                        render status: 500, json: { data: { error: @room.erros } }
                     end
                 else
-                    render status:401, json: { status: 'ERROR', data: { error: "invalid user" } }
+                    render status: 401, json: { data: { error: "invalid user" } }
                 end
             end
             
             def show
-                render status:200, json: { status: 'SUCCESS', data: { room: @room } }
+                render status: 200, json: { data: { room: @room } }
             end
 
             private
