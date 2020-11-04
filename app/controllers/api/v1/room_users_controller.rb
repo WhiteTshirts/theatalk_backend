@@ -9,6 +9,7 @@ module Api
 				users = User.where(room_id: @current_user.room_id).order(updated_at: :desc)
 				render status:200, json: { message: 'Loaded posts', data: { users: users } }
 			end
+
 			def create
 				pre_room_id = @current_user.room_id
 				if @current_user.update_attribute(:room_id, room_id_params[:room_id])
@@ -26,6 +27,7 @@ module Api
 					render status:500, json: { data: { error: @current_user.errors } }
 				end
 			end
+
 			def leave
 				room_id = @current_user.room_id
 				if @current_user.update_attribute(:room_id, nil)
@@ -41,6 +43,10 @@ module Api
 				else
 					render status:500, json: { data: { error: @current_user.errors } }
 				end
+			end
+
+			def get_num
+				room = Rooms_Tag.find_by(tag_id:).count
 			end
 			private
 			def room_id_params
