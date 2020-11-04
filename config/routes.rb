@@ -8,7 +8,7 @@ Rails.application.routes.draw do
       end
       resources :user_tags do
         collection do 
-          get :get_num
+          post :get_num
         end
       end
       resources :room_tags
