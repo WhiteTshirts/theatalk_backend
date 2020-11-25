@@ -1,8 +1,3 @@
-'''
-  author: Hiranuma Tomoyuki
-  Date: 20200904
-'''
-
 module JwtAuthenticator
   require "jwt"
   extend ActiveSupport::Concern
