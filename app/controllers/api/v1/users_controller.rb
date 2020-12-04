@@ -20,7 +20,7 @@ module Api
               if @user.save
                 jwt_token = encode(@user.id)
                 response.headers['X-Authentication-Token'] = jwt_token
-                render status:201, json: { data: { user: @user, token: jwt_token } }
+                render status:201, json: { data: @user, token: jwt_token }
               else
                 render status:409
               end
