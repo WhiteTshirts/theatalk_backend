@@ -1,0 +1,51 @@
+version: 2
+jobs:
+  build:
+    machine:
+      image: circleci/classic:edge # volume指定含めたdocker-composeが利用可能
+    steps:
+    - checkout
+    - run:
+        name: init_container.sh # rails newやbundle installしている（詳しくはリポジトリ確認して下さい）
+        command: sudo bash init_container.sh
+    - run:
+        name: up_service.sh #　db create migrate後にdocker-compose up
+        command: bash up_service.sh
+    #- run:
+    #    name: exec rspec #　rspec実行 テスト結果をHTML出力
+    #    command: docker-compose run app bundle exec rspec --format p --format html --out test-results/rspec.html
+    - store_artifacts: #　テスト結果をビルド情報画面で確認出来る様に格納先を指定
+        path: myapp/test-results/rspec.html
+        destination: rspec.html
+    - run:
+        name: docker-compose down
+        command: docker-compose down
+  deploy-prod: #本番環境への実行内容　Herokuアプリ名の環境変数値だけが違う
+    machine:
+      image: circleci/classic:edge
+    steps:
+    - checkout
+    - run:
+        name: heroku maintenance on
+        command: heroku maintenance:on --app ${HEROKU_APP_NAME_PROD}
+    - run:
+        name: heroku deploy
+        command: |
+          git subtree push --prefix myapp  https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME_PROD.git master
+    - run:
+        name: heroku maintenance off
+        command: heroku maintenance:off --app ${HEROKU_APP_NAME_PROD}
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+    - build
+   # - deploy-staging:
+        #requires:
+        #- build # デプロイ前にテスト必須とする
+        #filters:
+        #  branches:
+         #   only: staging # stagingブランチの変更に対してのみdeploy-stagingジョブ実行
+    - deploy-prod:
+        requires:
+        - build
