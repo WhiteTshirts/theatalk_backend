@@ -23,6 +23,10 @@ jobs:
     steps:
     - checkout
     - run:
+        name: "build docker image"
+        # registry.heroku.com/${HEROKU_APP_NAME}/webは変更することは出来ません．
+        command: docker build --rm=false -t registry.heroku.com/${HEROKU_APP_NAME_PROD}/web .
+    - run:
         name: heroku maintenance on
         command: heroku maintenance:on --app ${HEROKU_APP_NAME_PROD}
     - run:
