@@ -7,7 +7,7 @@ module Api
 
       def index
         @followings = @current_user.followings
-        render status: 200, json: { data: { users: @followings } }
+        render status: 200, json: { users: @followings }
       end
 
       def create
@@ -37,13 +37,13 @@ module Api
       end
 
       def follow_numbers
-        render status: 200, json: { data: { user: { id: @user.id, follow_number: @user.follow_number, follower_number: @user.follower_number } } }
+        render status: 200, json: { user: { id: @user.id, follow_number: @user.follow_number, follower_number: @user.follower_number } }
       end
 
       def follow_index
         @followings = User.find(user_params[:id]).followings
         print(@followings)
-        render status: 200, json: { data: { users: @followings } }
+        render status: 200, json: { users: @followings  }
       end 
 
       private

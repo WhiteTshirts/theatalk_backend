@@ -11,32 +11,32 @@ module Api
               destroy_tag_user = TagsUser.find_by("user_id = #{@current_user.id} and tag_id = #{tag_id}")
               if destroy_tag_user != nil
                 destroy_tag_user.destroy
-                render status:204, json: { message: 'Delete tag_user', data:{tag_user: destroy_tag_user} }
+                render status:204, json: { message: 'Delete tag_user', tag_user: destroy_tag_user }
               else
-                render status:500, json: { message: "Not found users' tag"}
+                render status:500, json: {message: "Not found users' tag"}
               end
             end
 
             def create
-              tag_user_info = tag_user_params
-              tag_user_info[:user_id] = @current_user.id
-              tag_user = TagsUser.new(tag_user_info)
-              if tag_user.save
-                  render status:201, json: { data: { tag_user: tag_user } }
-              else
-                  render status:500, json: { data: { error: tag_user.errors } }
-              end
+                tag_user_info = tag_user_params
+                tag_user_info[:user_id] = @current_user.id
+                tag_user = TagsUser.new(tag_user_info)
+                if tag_user.save
+                    render status:201, json: { tag_user: tag_user }
+                else
+                    render status:500, json: { error: tag_user.errors }
+                end
             end
             
             def show
               @tags = @user.tags
-              render status:200, json: { data: { tags: @tags} }
+              render status:200, json: { tags: @tags }
             end
 
             def get_num
               tag_id = tag_params[:id]
               users_num = TagsUser.where(tag_id: tag_id).count
-              render status:200, json: { data: { users_num: users_num　}}
+              render status:200, json: { users_num: users_num　}
             end
 
             def tag_params

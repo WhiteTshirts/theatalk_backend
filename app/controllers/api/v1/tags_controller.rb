@@ -9,27 +9,27 @@ module Api
             before_action :set_tag, only: [:destroy]
             def index 
                 tags = Tag.order(created_at: :desc).select(:id,:name)
-                render status:200, json: { status: 'SUCCESS', message: 'Loaded Tags', data: { tags: tags } }
+                render status:200, json: { message: 'Loaded Tags',tags: tags  }
               end
         
               def create
                 tag = Tag.new(tag_params)
                 if tag.save
-                  render status:201, json: { status: 'SUCCESS', data: { tag: tag } }
+                  render status:201, json: { tag: tag }
                 else
-                  render status:500, json: { status: 'ERROR', data: { error: tag.errors } }
+                  render status:500, json: { error: tag.errors }
                 end        
               end
 
               def search
                 search = sanitize_sql_like(params[:search])
                 tags = Tag.where('name LIKE ?', "%#{search}%")
-                render status:200, json: { status: 'SUCCESS', data: { tags: tags } }
+                render status:200, json: { tags: tags }
               end
               
               def destroy
                 @tag.destroy
-                render status:204, json: { status: 'SUCCESS', message: 'Deleted the Tag' }        
+                render status:204, json: { message: 'Deleted the Tag' }        
               end
         
               def tag_params

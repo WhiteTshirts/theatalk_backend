@@ -15,9 +15,9 @@ module Api
             def create
                 room_tag = RoomsTag.new(room_tag_params)
                 if room_tag.save
-                    render status:201, json: { status: 'SUCCESS', data: { room_tag: room_tag } }
+                    render status:201, json: {  room_tag: room_tag }
                 else
-                    render status:500, json: { status: 'ERROR', data: { error: room_tag.errors } }
+                    render status:500, json: { error: room_tag.errors  }
                 end
             end
 
@@ -26,9 +26,9 @@ module Api
             def destroy #Roomを:idで指定、tag_idをparamとして受け付ける
                 if @room_tag != nil
                     @room_tag.destroy
-                    render status:204, json: { status: 'SUCCESS'}
+                    render status:204
                 else
-                    render status:500, json: { status: 'ERROR', data: {error: 'room&tag does not exist' } }
+                    render status:500, json: {error: 'room&tag does not exist' }
                 end
             end
 
@@ -37,7 +37,7 @@ module Api
             def show
                 tag_id = @tag.id
                 rooms = Room.joins(:tags).where("tag_id = #{tag_id}")
-                render status:200, json: { status: 'SUCCESS', data: {rooms: rooms } }
+                render status:200, json: { rooms: rooms  }
             end
             
             private

@@ -5,9 +5,9 @@ module Api
 
             def index
                 if chats = Chat.where(room_id: @current_user.room_id).order(updated_at: :desc)
-                    render status:200, json: { status: 'SUCCESS',data: { chats: chats } }
+                    render status:200, json: {  chats: chats  }
                 else
-                    render status:500, json: { status: 'ERROR', data:{ error: "can't get Info"}}
+                    render status:500, json: { error: "can't get Info"}
                 end
             end
 
@@ -19,21 +19,21 @@ module Api
                 if @new_chat.save
                     chat_info[:name]=@current_user.name
                     RoomChannel.broadcast_to("room_#{chat_info[:room_id]}", chat_info)
-                    render status:201, json: { status: 'SUCCESS', data: { chat: chat_info } }
+                    render status:201, json: { chat: chat_info  }
                 else 
-                    render status:500, json: { status: 'ERROR', data: { error: "please send message" } }
+                    render status:500, json: {  error: "please send message" }
                 end
             end
             def update
                 chat = Chat.find(params[:id])
                 if chat.user_id == @current_user.id
                     if updated_chat = Chat.update(chat_params)
-                        render status:200, json: { status: 'SUCCESS', data: { chat: updated_chat } }
+                        render status:200, json: { chat: updated_chat  }
                     else
-                        render status:500, json: { status: 'ERROR', data: { error: "can't get Info" } }
+                        render status:500, json: { error: "can't get Info" }
                     end
                 else
-                    render status:401, json: {status: 'ERROR', data: {error: "invalid user"}}
+                    render status:401, json: {error: "invalid user"}
                 end
             end
             private
