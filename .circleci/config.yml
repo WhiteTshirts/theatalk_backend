@@ -1,0 +1,64 @@
+version: 2.1
+jobs:
+  build:
+    machine:
+      image: circleci/classic:edge # volume指定含めたdocker-composeが利用可能
+    steps:
+    - checkout
+    - run:
+        name: init_container.sh # rails newやbundle installしている（詳しくはリポジトリ確認して下さい）
+        command: sudo bash init_container.sh
+    - run:
+        name: up_service.sh #　db create migrate後にdocker-compose up
+        command: bash up_service.sh
+    #- run:
+    #    name: exec rspec #　rspec実行 テスト結果をHTML出力
+    #    command: docker-compose run app bundle exec rspec --format p --format html --out test-results/rspec.html
+    - run:
+        name: docker-compose down
+        command: docker-compose down
+  deploy-prod: #本番環境への実行内容　Herokuアプリ名の環境変数値だけが違う
+    machine:
+      image: circleci/classic:edge
+    steps:
+    - checkout
+    - run:
+        name: "build docker image"
+        # registry.heroku.com/${HEROKU_APP_NAME}/webは変更することは出来ません．
+        command: docker build --rm=false -t registry.heroku.com/${HEROKU_APP_NAME_PROD}/web .
+
+    - run:
+        name: setup heroku command
+        command: bash .circleci/setup_heroku.sh
+    - run:
+        name: heroku maintenance on
+        command: heroku maintenance:on --app ${HEROKU_APP_NAME_PROD}
+    - run:
+        name: heroku deploy
+        command: |
+          docker login --username=_ --password=${HEROKU_API_KEY} registry.heroku.com
+          docker push registry.heroku.com/${HEROKU_APP_NAME_PROD}/web
+          heroku container:push web --app ${HEROKU_APP_NAME_PROD}
+          heroku container:release web --app ${HEROKU_APP_NAME_PROD}
+
+
+    - run:
+        name: heroku maintenance off
+        command: heroku maintenance:off --app ${HEROKU_APP_NAME_PROD}
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+    - build
+   # - deploy-staging:
+        #requires:
+        #- build # デプロイ前にテスト必須とする
+        #filters:
+        #  branches:
+         #   only: staging # stagingブランチの変更に対してのみdeploy-stagingジョブ実行
+    - deploy-prod:
+        requires:
+        - build
+        filters:
+          branches:
+            only: develop

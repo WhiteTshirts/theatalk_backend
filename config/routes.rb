@@ -6,7 +6,11 @@ Rails.application.routes.draw do
       resources :rooms do
         resources :chats
       end
-      resources :user_tags
+      resources :user_tags do
+        collection do 
+          post :get_num
+        end
+      end
       resources :room_tags
       resources :room_users do
         collection do 
