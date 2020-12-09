@@ -18,28 +18,28 @@ module Api
 						RoomChannel.broadcast_to("room_#{room_id_params[:room_id]}",info)
 					  room = Room.find_by(id: room_id_params[:room_id])
 						room.increment!(:viewer)
-						render status:201, json: { data: { users: users } }
+						render status:201, json: {users: users  }
 					else
-						render status:200, json:{ data:{}}
+						render status:200, json:{}
 					end
 				else
-					render status:500, json: { data: { error: @current_user.errors } }
+					render status:500, json: { error: @current_user.errors  }
 				end
 			end
 			def leave
 				room_id = @current_user.room_id
 				if @current_user.update_attribute(:room_id, nil)
 					if room_id.nil?
-						render status:404, json: { data: {}}
+						render status:404, json: {}
 					else
 					  room = Room.find_by(id: room_id)
 						room.increment!(:viewer,-1)
 						info = { type:"del",user:{id:@current_user.id,name:@current_user.name}}
 						RoomChannel.broadcast_to("room_#{room_id_params[:room_id]}",info)
-						render status:204, json: { data:{}}
+						render status:204, json: { }
 					end
 				else
-					render status:500, json: { data: { error: @current_user.errors } }
+					render status:500, json: {error: @current_user.errors }
 				end
 			end
 			private
