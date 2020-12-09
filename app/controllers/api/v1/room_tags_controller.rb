@@ -26,7 +26,7 @@ module Api
             def destroy #Roomを:idで指定、tag_idをparamとして受け付ける
                 if @room_tag != nil
                     @room_tag.destroy
-                    render status:204, json: {}
+                    render status:204
                 else
                     render status:500, json: {error: 'room&tag does not exist' }
                 end

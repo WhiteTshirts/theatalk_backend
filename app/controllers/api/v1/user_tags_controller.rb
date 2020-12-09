@@ -36,7 +36,7 @@ module Api
             def get_num
               tag_id = tag_params[:id]
               users_num = TagsUser.where(tag_id: tag_id).count
-              render status:200, json: { data: { users_num: users_num　}}
+              render status:200, json: { users_num: users_num　}
             end
 
             def tag_params
