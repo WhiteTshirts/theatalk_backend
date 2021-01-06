@@ -46,7 +46,7 @@ module Api
 			end
 
 			def get_num
-				room = RoomsTag.find_by(tag_id: params[:tags][:id])&.count
+				room = RoomsTag.where(tag_id: params[:tags][:id])&.count
 				render status: 200, json: { data: { users_num: room } }
 			end
 			private
