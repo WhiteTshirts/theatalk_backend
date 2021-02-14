@@ -37,7 +37,7 @@ module Api
 					  room = Room.find_by(id: room_id)
 						room.increment!(:viewer, -1)
 						info = { type: "del",user:{id: @current_user.id, name: @current_user.name}}
-						RoomChannel.broadcast_to("room_#{room_id_params[:room_id]}", info)
+						RoomChannel.broadcast_to("room_#{@current_user.room_id}", info)
 						render status: 204
 					end
 				else
