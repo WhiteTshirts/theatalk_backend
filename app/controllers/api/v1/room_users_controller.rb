@@ -29,20 +29,21 @@ module Api
 			end
 
 			def leave
-				room_id = @current_user.room_id
-				if @current_user.update_attribute(:room_id, nil)
-					if room_id.nil?
-						render status: 404
-					else
-					  room = Room.find_by(id: room_id)
-						room.increment!(:viewer, -1)
-						info = { type: "del",user:{id: @current_user.id, name: @current_user.name}}
-						RoomChannel.broadcast_to("room_#{@current_user.room_id}", info)
-						render status: 204
-					end
-				else
-					render status: 500, json: { error: @current_user.errors }
-				end
+				render status: 204
+				# room_id = @current_user.room_id
+				# if @current_user.update_attribute(:room_id, nil)
+				# 	if room_id.nil?
+				# 		render status: 404
+				# 	else
+				# 	  room = Room.find_by(id: room_id)
+				# 		room.increment!(:viewer, -1)
+				# 		info = { type: "del",user:{id: @current_user.id, name: @current_user.name}}
+				# 		#RoomChannel.broadcast_to("room_#{@current_user.room_id}", info)
+				# 		render status: 204
+				# 	end
+				# else
+				# 	render status: 500, json: { error: @current_user.errors }
+				# end
 			end
 
 			def get_num

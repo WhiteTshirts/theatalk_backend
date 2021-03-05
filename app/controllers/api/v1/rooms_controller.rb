@@ -6,7 +6,7 @@ module Api
             before_action :set_room, only: [:update, :show]
 
             def index
-                rooms = Room.all.order(created_at: :desc).where('viewer > ?',0).select(:id, :name, :admin_id, :youtube_id, :password, :is_private,:start_time, :created_at, :updated_at,:viewer)
+                rooms = Room.all.order(created_at: :desc).where('viewer > ?',-1).select(:id, :name, :admin_id, :youtube_id, :password, :is_private,:start_time, :created_at, :updated_at,:viewer)
                 render status:200, json: {rooms: rooms }
             end
 
