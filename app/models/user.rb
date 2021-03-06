@@ -6,6 +6,9 @@ class User < ApplicationRecord
 	has_many :reverse_of_relationships, class_name: 'UserFollow', foreign_key: 'follow_id'
 	has_many :followers, through: :reverse_of_relationships, source: :user
 	has_and_belongs_to_many :tags
+	has_many :dm_messages
+	has_many :user_dms
+	has_many :dms, through: :user_dms
 	validates :password, presence: true
 	validates :name, presence: true, uniqueness: true
 
