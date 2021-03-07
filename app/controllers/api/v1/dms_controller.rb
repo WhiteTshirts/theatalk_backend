@@ -5,7 +5,7 @@ module Api
       jwt_authenticate
       def index
         dms = @current_user.dms
-        render status:200, json: {dms: dms}
+        render status:200, json: dms, root: "dms", adapter: :json
       end
       def create
         for user in dm_users_id do
@@ -19,7 +19,7 @@ module Api
           dm.users.build(id: user)
         end
         dm.save
-        render status:201, json:{ dm:{users: dm.users} }
+        render status:201, json: dm, root: "dm", adapter: :json
       end
       def update
         for user in dm_users_id do
