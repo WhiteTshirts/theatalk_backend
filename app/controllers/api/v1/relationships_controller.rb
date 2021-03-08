@@ -18,7 +18,7 @@ module Api
           if @following.save
             @current_user.increment!(:follow_number)
             @user.increment!(:follower_number)
-            render status: 201
+            render status: 201,json: {user:@user}
           else
             render status: 500
           end

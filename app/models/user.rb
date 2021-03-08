@@ -9,6 +9,8 @@ class User < ApplicationRecord
 	has_many :dm_messages
 	has_many :user_dms
 	has_many :dms, through: :user_dms
+	has_many :room_histories
+	has_many :rooms
 	validates :password, presence: true
 	validates :name, presence: true, uniqueness: true
 

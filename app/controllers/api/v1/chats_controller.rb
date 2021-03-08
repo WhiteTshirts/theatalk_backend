@@ -5,7 +5,7 @@ module Api
 
 			def index
 				if chats = Chat.where(room_id: @current_user.room_id).order(updated_at: :desc)
-					render status:200, json: {  chats: chats  }
+					render status:200, json: chats, root: "chats", adapter: :json
 				else
 					render status:500, json: { error: "can't get Info"}
 				end

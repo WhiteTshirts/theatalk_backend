@@ -6,8 +6,8 @@ module Api
 			# ルームに入室しているユーザ一覧を取得(入室した順番に取得)
 
 			def index 
-				users = User.where(room_id: @current_user.room_id).order(updated_at: :desc)
-				render status: 200, json: { message: 'Loaded posts', users: users}
+				users = User.join(:relationship).where(room_id: @current_user.room_id).order(updated_at: :desc)
+				render status: 200, json: {users:users}#users,root: "users", adapter: :json
 			end
 
 			def create
@@ -19,7 +19,7 @@ module Api
 						RoomChannel.broadcast_to("room_#{room_id_params[:room_id]}", info)
 					  room = Room.find_by(id: room_id_params[:room_id])
 						room.increment!(:viewer)
-						render status: 201, json: { users: users  }
+						render status: 201, json: users,root: "users", adapter: :json
 					else
 						render status: 200
 					end
@@ -48,7 +48,7 @@ module Api
 
 			def get_num
 				room = RoomsTag.where(tag_id: params[:tags][:id])&.count
-				render status: 200, json: { data: { users_num: room } }
+				render status: 200, json: { users_num: room }
 			end
 			private
 			def room_id_params

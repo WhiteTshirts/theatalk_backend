@@ -6,13 +6,13 @@ module Api
           
           # ユーザ一覧を取得
           def index 
-              @users = User.where(room_id: params[:room_id]).order(updated_at: :desc).select(:id,:name,:profile,:room_id,:created_at,:updated_at)
-              render status: 200, json: { users: @users }
+              @users = User.where(room_id: params[:room_id]).order(updated_at: :desc)
+              render status: 200, json: {users: @users}#@users, root:"users",adapter: :json
           end
 
           def show
             @user = User.select(:id,:name,:profile,:room_id,:created_at,:updated_at).find(params[:id])
-            render status: 200, json: { user: @user }
+            render status: 200, json: @user, root:"user",adapter: :json
           end
           # ユーザ登録
           def create
@@ -22,7 +22,7 @@ module Api
                 response.headers['X-Authentication-Token'] = jwt_token
                 render status:201, json: { user: @user, token: jwt_token  }
               else
-                render status:409
+                render status:409, json:{user:@user.errors}
               end
           end
 
