@@ -7,8 +7,8 @@ module Api
       end
       def create
         if room = Room.find_by(id: room_params[:id])
-          if room_history = RoomHistory.find_by(room_id:room_params[:id],user_id:@current_user.id)
-            room_history.update(user_id:@current_user.id)
+          if room_history = @current_user.room_histories.find_by(room_id:room_params[:id])
+            room_history.touch
             render status:200, json:{ room_history:room_history}
           else
             room_history = RoomHistory.new(room_id:room_params[:id],user_id:@current_user.id)

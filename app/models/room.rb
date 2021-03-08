@@ -9,5 +9,5 @@ class Room < ApplicationRecord
     validates :admin_id, presence: true
     validates :youtube_id, presence: true
     validates :name, presence: true
-    #Kyosuke Yokota
+    
 end
