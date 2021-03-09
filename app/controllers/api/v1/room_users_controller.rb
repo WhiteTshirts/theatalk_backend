@@ -7,7 +7,7 @@ module Api
 
 			def index 
 				users = User.join(:relationship).where(room_id: @current_user.room_id).order(updated_at: :desc)
-				render status: 200, json: {users:users}#users,root: "users", adapter: :json
+				render status: 200, json: users,include: '**',user: @current_user, adapter: :json
 			end
 
 			def create

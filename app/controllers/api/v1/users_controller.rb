@@ -1,13 +1,13 @@
 module Api
     module V1
         class UsersController < ApplicationController
-          jwt_authenticate except: [:create, :show, :index]
+          jwt_authenticate except: [:create, :show]
           before_action :set_user, only: [:show, :update]
           
           # ユーザ一覧を取得
           def index 
-              @users = User.where(room_id: params[:room_id]).order(updated_at: :desc)
-              render status: 200, json: {users: @users}#@users, root:"users",adapter: :json
+              users = User.all#where(room_id: params[:room_id]).order(updated_at: :desc)
+              render status: 200, json: users,include: '**',user:@current_user,scope: :detail
           end
 
           def show

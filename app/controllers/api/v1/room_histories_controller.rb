@@ -3,6 +3,7 @@ module Api
     class RoomHistoriesController < ApplicationController
       jwt_authenticate
       def index
+        
         render status:200, json:{room_histories:@current_user.room_histories.order(updated_at: "DESC")}
       end
       def create
