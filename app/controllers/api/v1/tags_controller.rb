@@ -9,7 +9,7 @@ module Api
             before_action :set_tag, only: [:destroy]
             def index 
                 tags = Tag.order(created_at: :desc).select(:id,:name)
-                render status:200, json: { message: 'Loaded Tags',tags: tags  }
+                render status:200, json: tags
               end
         
               def create
