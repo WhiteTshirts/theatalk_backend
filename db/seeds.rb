@@ -22,9 +22,11 @@ Tag.create(:name=>"アニメ")
 Tag.create(:name=>"HIKAKIN")
 Tag.create(:name=>"魚")
 Tag.create(:name=>"鬼滅の刃")
-Tag.create(:name=>"楽天")
+Tag.create(:name=>"ニュース")
 Tag.create(:name=>"ポケモン")
-Tag.create(:name=>"Vtuber")
+Tag.create(:name=>"天気")
+Tag.create(:name=>"ペット")
+Tag.create(:name=>"スポーツ")
 
 
 

@@ -1,18 +1,22 @@
 module Api
     module V1
         class UsersController < ApplicationController
-          jwt_authenticate except: [:create, :show, :index]
+          jwt_authenticate except: [:create]
           before_action :set_user, only: [:show, :update]
           
           # ユーザ一覧を取得
           def index 
-              @users = User.where(room_id: params[:room_id]).order(updated_at: :desc).select(:id,:name,:profile,:room_id,:created_at,:updated_at)
-              render status: 200, json: { users: @users }
+              users = User.all#where(room_id: params[:room_id]).order(updated_at: :desc)
+              render status: 200, json: users,include: '**',user:@current_user,scope: :detail
           end
 
           def show
-            @user = User.select(:id,:name,:profile,:room_id,:created_at,:updated_at).find(params[:id])
-            render status: 200, json: { user: @user }
+            if user = User.find_by(id:params[:id])
+              render status: 200, json: user,user:@current_user,scope: :detail
+            else
+              render status:404, json: {error:"not found"}
+            end
+
           end
           # ユーザ登録
           def create
@@ -22,7 +26,7 @@ module Api
                 response.headers['X-Authentication-Token'] = jwt_token
                 render status:201, json: { user: @user, token: jwt_token  }
               else
-                render status:409
+                render status:409, json:{user:@user.errors}
               end
           end
 

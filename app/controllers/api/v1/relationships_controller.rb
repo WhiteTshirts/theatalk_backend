@@ -6,8 +6,11 @@ module Api
       before_action :set_user
 
       def index
-        @followings = @current_user.followings
-        render status: 200, json: { users: @followings }
+        if params[:list]=="followings"
+          render status:200,json:@user.followings
+        else
+          render status:200,json:@user.followers
+        end
       end
 
       def create
@@ -18,7 +21,7 @@ module Api
           if @following.save
             @current_user.increment!(:follow_number)
             @user.increment!(:follower_number)
-            render status: 201
+            render status: 201,json: {user:@user}
           else
             render status: 500
           end
@@ -49,7 +52,10 @@ module Api
       private
 
       def set_user
-        @user = User.find_by(id: user_params[:id])
+        if @user = User.find_by(id: user_params[:id])
+        else
+          render status:404
+        end
       end
 
       def user_params
