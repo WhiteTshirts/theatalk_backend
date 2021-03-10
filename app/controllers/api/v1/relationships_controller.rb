@@ -9,7 +9,7 @@ module Api
         if params[:list]=="followings"
           render status:200,json:@user.followings
         else
-          render status:200#,json:@user.followers
+          render status:200,json:@user.followers
         end
         # if request.query_parameters[:users] == "followings"
         #   @followings = @current_user.followings
