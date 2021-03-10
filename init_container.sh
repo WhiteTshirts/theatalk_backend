@@ -2,4 +2,3 @@
 
 
 docker-compose build --no-cache
-docker-compose run web rails db:migrate
