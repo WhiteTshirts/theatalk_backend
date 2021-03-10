@@ -60,5 +60,6 @@ workflows:
     - deploy-prod:
         requires:
         - build
-        # filters:
-        #   branches:
+        filters:
+          branches:
+            only: develop
