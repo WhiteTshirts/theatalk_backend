@@ -3,8 +3,9 @@ module Api
     class RoomHistoriesController < ApplicationController
       jwt_authenticate
       def index
-        
-        render status:200, json:{room_histories:@current_user.room_histories.order(updated_at: "DESC")}
+        rooms = Room.joins(:room_histories).order('room_histories.updated_at desc')
+        render status:200,json: rooms,include: '**', user: @current_user
+
       end
       def create
         if room = Room.find_by(id: room_params[:id])

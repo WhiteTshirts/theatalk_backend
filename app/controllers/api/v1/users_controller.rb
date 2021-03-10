@@ -1,7 +1,7 @@
 module Api
     module V1
         class UsersController < ApplicationController
-          jwt_authenticate except: [:create, :show]
+          jwt_authenticate except: [:create]
           before_action :set_user, only: [:show, :update]
           
           # ユーザ一覧を取得
@@ -11,8 +11,12 @@ module Api
           end
 
           def show
-            @user = User.select(:id,:name,:profile,:room_id,:created_at,:updated_at).find(params[:id])
-            render status: 200, json: @user, root:"user",adapter: :json
+            if user = User.find_by(id:params[:id])
+              render status: 200, json: user,user:@current_user,scope: :detail
+            else
+              render status:404, json: {error:"not found"}
+            end
+
           end
           # ユーザ登録
           def create

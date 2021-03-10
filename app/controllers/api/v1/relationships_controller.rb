@@ -6,8 +6,17 @@ module Api
       before_action :set_user
 
       def index
-        @followings = @current_user.followings
-        render status: 200, json: { users: @followings }
+        if params[:list]=="followings"
+          render status:200,json:@user.followings
+        else
+          render status:200#,json:@user.followers
+        end
+        # if request.query_parameters[:users] == "followings"
+        #   @followings = @current_user.followings
+        #   render status: 200, json: users: @followings 
+        # else
+        #   render status:200
+        # end
       end
 
       def create
@@ -49,7 +58,10 @@ module Api
       private
 
       def set_user
-        @user = User.find_by(id: user_params[:id])
+        if @user = User.find_by(id: user_params[:id])
+        else
+          render status:404
+        end
       end
 
       def user_params

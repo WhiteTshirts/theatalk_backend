@@ -3,17 +3,17 @@ module Api
         class RoomsController < ApplicationController
             include JwtAuthenticator 
             jwt_authenticate 
-            before_action :set_room, only: [:update, :show]
+            before_action :set_room, only: [:update]
 
             def index
                 rooms = Room.all.order(created_at: :desc).where('viewer > ?',-1).select(:id, :name, :admin_id, :youtube_id, :password, :is_private,:start_time, :created_at, :updated_at,:viewer)
-                render status:200, json: rooms, root: "rooms", adapter: :json
+                render status:200, json: rooms
             end
 
             def create
                 room_info = room_params
                 room_info[:admin_id] = @current_user.id
-                room_info[:viewer] = 1
+                room_info[:viewer] = 0
                 room = Room.new(room_info)
                 if room.save && @current_user.update_attribute(:room_id, room.id)
                     # save したら、 RoomsTagsと紐付けを行う
@@ -44,12 +44,16 @@ module Api
             end
             
             def show
-                render status:200, json: { room: @room }
+                if room = Room.find_by(id:params[:id])
+                    render status:200, json: room
+                else
+                    render status:404
+                end
             end
 
             private
             def set_room
-                @room = Room.find(params[:id])
+                @room = Room.find_by(params[:id])
             end
 
             def room_params

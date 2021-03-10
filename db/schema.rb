@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20210308125447) do
+ActiveRecord::Schema.define(version: 20210309153842) do
 
   create_table "chats", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.integer "user_id"
@@ -104,6 +104,7 @@ ActiveRecord::Schema.define(version: 20210308125447) do
     t.string "password_digest"
     t.integer "follow_number", default: 0
     t.integer "follower_number", default: 0
+    t.string "img_path"
   end
 
   add_foreign_key "relationships", "users"

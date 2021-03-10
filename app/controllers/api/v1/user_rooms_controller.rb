@@ -5,7 +5,7 @@ module Api
       jwt_authenticate
       def index
         if user = User.find_by(id:params[:user_id])
-          rooms = Room.joins(:room_histories).order('room_histories.updated_at desc')
+          rooms = Room.where(admin_id:user.id)
           render status:200,json: rooms,include: '**', user: @current_user
         else
           render status:404
