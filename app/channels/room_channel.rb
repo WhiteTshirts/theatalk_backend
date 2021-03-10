@@ -8,8 +8,7 @@ class RoomChannel < ApplicationCable::Channel
   def unsubscribed
     room_id = current_user.room_id
     if current_user.update_attribute(:room_id, nil)
-      if room_id.nil?
-      else
+      unless room_id.nil?
         room = Room.find_by(id: room_id)
         room.increment!(:viewer, -1)
         #info = { type: "del",user:{id: current_user.id, name: current_user.name}}
