@@ -25,7 +25,7 @@ module Api
                         room_tag.save
                     end
 
-                    render status:201, json: { room: room, user: @current_user }
+                    render status:201, json: { room: room }
                 else 
                     render status:500, json: { error: "save error" }
                 end
@@ -44,7 +44,7 @@ module Api
             end
             
             def show
-                if room = Room.find_by(id:params[:id])
+                if room = Room.find_by(params[:id])
                     render status:200, json: room
                 else
                     render status:404

@@ -9,9 +9,6 @@ jobs:
         name: init_container.sh # rails newやbundle installしている（詳しくはリポジトリ確認して下さい）
         command: sudo bash init_container.sh
     - run:
-        name: "rails migrate"
-        command: docker-compose run web rails db:migrate
-    - run:
         name: up_service.sh #　db create migrate後にdocker-compose up
         command: bash up_service.sh
     #- run:
