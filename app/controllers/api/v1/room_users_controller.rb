@@ -25,7 +25,7 @@ module Api
 						RoomChannel.broadcast_to("room_#{room_id_params[:room_id]}", info)
 						room = Room.find_by(id: room_id_params[:room_id])
 						room.increment!(:viewer)
-						render status: 201, json: {room_history:room_history} #users,root: "users", adapter: :json
+						render status: 201, json: users,root: "users", adapter: :json
 					else
 						render status: 200
 					end

@@ -11,12 +11,6 @@ module Api
         else
           render status:200,json:@user.followers
         end
-        # if request.query_parameters[:users] == "followings"
-        #   @followings = @current_user.followings
-        #   render status: 200, json: users: @followings 
-        # else
-        #   render status:200
-        # end
       end
 
       def create
