@@ -14,8 +14,6 @@ gem 'mysql2', '>= 0.3.18', '< 0.6.0'
 gem 'puma', '~> 3.7'
 gem 'rack-cors'
 gem 'active_model_serializers', '~> 0.10.0'
-gem "activerecord", ">= 5.2.4.5"
-gem "activesupport", ">= 5.2.4.3"
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'

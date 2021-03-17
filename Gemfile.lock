@@ -174,8 +174,6 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
-  activerecord (>= 5.2.4.5)
-  activesupport (>= 5.2.4.3)
   bcrypt
   byebug
   factory_bot_rails
