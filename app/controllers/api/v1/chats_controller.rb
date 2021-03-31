@@ -4,6 +4,10 @@ module Api
 			jwt_authenticate
 
 			def index
+				if @current_user.room_id == nil
+					render status:401
+					return
+				end
 				if chats = Chat.where(room_id: @current_user.room_id).order(updated_at: :desc)
 					render status:200, json: chats, root: "chats", adapter: :json
 				else
