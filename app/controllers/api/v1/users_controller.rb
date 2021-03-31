@@ -7,12 +7,12 @@ module Api
           # ユーザ一覧を取得
           def index 
               users = User.all#where(room_id: params[:room_id]).order(updated_at: :desc)
-              render status: 200, json: users,include: '**',user:@current_user,scope: :detail
+              render status: 200, json: users,user:@current_user,scope: :detail
           end
 
           def show
             if user = User.find_by(id:params[:id])
-              render status: 200, json: user,user:@current_user,scope: :detail
+              render status: 200, json: user,user:@current_user,scope: :all
             else
               render status:404, json: {error:"not found"}
             end
