@@ -1,5 +1,6 @@
 class User < ApplicationRecord
 	has_secure_password
+	has_one_attached :avatar
 	has_many :chats
 	has_many :relationships
 	has_many :followings, through: :relationships, source: :follow

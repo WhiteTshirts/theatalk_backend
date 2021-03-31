@@ -5,6 +5,7 @@ require "rails"
 require "active_model/railtie"
 require "active_job/railtie"
 require "active_record/railtie"
+require "active_storage/engine"
 require "action_controller/railtie"
 require "action_mailer/railtie"
 require "action_view/railtie"
@@ -30,7 +31,6 @@ module Myapp
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
     config.time_zone = 'Tokyo' #Hiranuma
-    #rikuiwasaki
     config.action_cable.mount_path='/cable'
     config.generators do |g|
       g.test_framework :rspec,
@@ -47,6 +47,5 @@ module Myapp
           methods: [:get, :post, :options, :head]
       end
     end
-    #rikuiwasaki
   end
 end
