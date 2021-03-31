@@ -15,26 +15,26 @@ module Api
 				room = Room.find_by(id: room_id_params[:room_id])
 				if room.nil?
 					render status: 404, json: { error: "not found room" }
-				else
-					if @current_user.update_attribute(:room_id, room_id_params[:room_id])
-						if pre_room_id != room_id_params[:room_id]
-							if room_history = @current_user.room_histories.find_by(room_id:room_id_params[:room_id])
-								room_history.touch
-							else
-								room_history = RoomHistory.new(room_id:room_id_params[:room_id],user_id:@current_user.id)
-								room_history.save
-							end
-							info = { type: "add", user: { id: @current_user.id, name: @current_user.name } }
-							users = User.where(room_id: room_id_params[:room_id])
-							RoomChannel.broadcast_to("room_#{room_id_params[:room_id]}", info)
-							render status: 201, json:{room:room}
-						else
-							render status: 200, json:{room:room}
-						end
-					else
-						render status: 500, json: { error: @current_user.errors  }
-					end
+					return
 				end
+				unless @current_user.update_attribute(:room_id, room_id_params[:room_id])
+					render status: 500, json: { error: @current_user.errors  }
+					return
+				end
+				if pre_room_id == room_id_params[:room_id]
+					render status: 200, json:{room:room}
+					return
+				end
+				if room_history = @current_user.room_histories.find_by(room_id:room_id_params[:room_id])
+					room_history.touch
+				else
+					room_history = RoomHistory.new(room_id:room_id_params[:room_id],user_id:@current_user.id)
+					room_history.save
+				end
+				info = { type: "add", user: { id: @current_user.id, name: @current_user.name } }
+				users = User.where(room_id: room_id_params[:room_id])
+				RoomChannel.broadcast_to("room_#{room_id_params[:room_id]}", info)
+				render status: 201, json:{room:room}
 			end
 
 			def leave
