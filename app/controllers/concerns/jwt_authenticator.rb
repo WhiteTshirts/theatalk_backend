@@ -14,14 +14,16 @@ module JwtAuthenticator
 
   def jwt_authenticate
     if request.headers['Authorization'].blank?
-      raise UnableAuthorizationError.new('認証情報が不足')
+      render status: 401, json: {error: '認証情報不足'}
+      return
     end
 
     encoded_token = request.headers['Authorization'].split('Bearer ').last
     payload = decode(encoded_token)
     @current_user = User.find_by(id: payload["user_id"])
     if @current_user.nil?
-      raise UnableAuthorizationError.new('認証できません')
+      render status: 401, json: {error: '認証できません'}
+      return
     end
     @current_user
   end
