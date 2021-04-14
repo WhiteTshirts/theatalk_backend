@@ -30,13 +30,18 @@ module Api
 
       def destroy
         @following = @current_user.unfollow(@user)
-        if @following.destroy
-          @current_user.increment!(:follow_number, -1)
-          @user.increment!(:follower_number, -1)
-          render status: 204
+        if @following == nil
+          render status: 404
         else
-          render status: 500
+          if @following.destroy
+            @current_user.increment!(:follow_number, -1)
+            @user.increment!(:follower_number, -1)
+            render status: 204
+          else
+            render status: 500
+          end
         end
+
       end
 
       def follow_numbers
