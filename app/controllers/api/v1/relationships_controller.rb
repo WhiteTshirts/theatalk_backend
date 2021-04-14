@@ -6,6 +6,7 @@ module Api
       before_action :set_user
 
       def index
+        no_user && return
         if params[:list]=="followings"
           render status:200,json:@user.followings
         else
@@ -14,23 +15,23 @@ module Api
       end
 
       def create
-        if @user == nil 
+        no_user && return
+        same_user && return
+        @following = @current_user.follow(@user)
+        if @following.save
+          @current_user.increment!(:follow_number)
+          @user.increment!(:follower_number)
+          render status: 201,json: {user:@user}
+        else
           render status: 500
-        else 
-          @following = @current_user.follow(@user)
-          if @following.save
-            @current_user.increment!(:follow_number)
-            @user.increment!(:follower_number)
-            render status: 201,json: {user:@user}
-          else
-            render status: 500
-          end
         end
       end
 
       def destroy
+        no_user && return
+        same_user && return
         @following = @current_user.unfollow(@user)
-        if @following == nil
+        if @following.nil?
           render status: 404
         else
           if @following.destroy
@@ -57,12 +58,18 @@ module Api
       private
 
       def set_user
-        if @user = User.find_by(id: user_params[:id])
-        else
+        @user = User.find_by(id: user_params[:id])
+      end
+      def no_user
+        if @user.nil?
           render status:404
         end
       end
-
+      def same_user
+        if @user.id == @current_user.id
+          render status:405
+        end
+      end
       def user_params
         params.require(:user).permit(:id)
       end
