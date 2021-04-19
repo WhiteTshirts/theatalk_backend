@@ -3,9 +3,16 @@
 require 'rails_helper'
 
 describe 'RoomAPI' do
+  before do
+    @user = FactoryBot.create(:user)
+    post '/api/v1/login',params:{user:{name:@user.name,password:@user.password}}
+    json = JSON.parse(response.body)
+    @token = json["token"]
+    @headers = {'Authorization' => "Bearer #{@token}"}
+  end
   it '全てのRoomを取得' do
     FactoryBot.create_list(:room_create,10)
-    get '/api/v1/rooms'
+    get '/api/v1/rooms',headers:@headers
     rooms=JSON.parse(response.body)
     expect(response.status).to eq(200)
     expect(users['data']['rooms'].length).to eq(10)
@@ -16,7 +23,7 @@ describe 'RoomAPI' do
                   is_private:false,
                   start_time:Time.current
                 }
-    expect{post '/api/v1/rooms',params:{post:valid_params}}.to change(Room,:count).by(+1)
+    expect{post '/api/v1/rooms',headers:@headers,params:{post:valid_params}}.to change(Room,:count).by(+1)
     expect(response.status).to eq(200)
 
   end
