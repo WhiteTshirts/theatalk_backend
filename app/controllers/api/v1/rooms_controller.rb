@@ -34,7 +34,7 @@ module Api
             def update
                 if @current_user.id == @room.admin_id
                     if @room.update(room_params)
-                        render status:200, json: room
+                        render status:200, json: {room: room}
                     else
                         render status:500, json: { error: @room.erros  }
                     end
