@@ -9,6 +9,7 @@ describe 'RoomAPI' do
     json = JSON.parse(response.body)
     @token = json["token"]
     @headers = {'Authorization' => "Bearer #{@token}"}
+    @room
   end
   it '全てのRoomを取得' do
     FactoryBot.create_list(:room_create,10)
@@ -17,19 +18,29 @@ describe 'RoomAPI' do
     expect(response.status).to eq(200)
     expect(rooms['rooms'].length).to eq(10)
   end
-  it '新しいROOMを作成' do
-    valid_params={
-      room:{
-        name:'room1',
-        youtube_id:'1',
-        is_private:false,
-        start_time:Time.current
+  context 'ルームを作成し、入室' do
+    it '新しいROOMを作成' do
+      valid_params={
+        room:{
+          name:'room1',
+          youtube_id:'1',
+          is_private:false,
+          start_time:Time.current
+          }
+        }
+      expect{post '/api/v1/rooms',headers:@headers,params:valid_params}.to change(Room,:count).by(+1)
+      @room = JSON.parse(response.body)
+      expect(response.status).to eq(201)
+      room_params={
+        user:{
+          room_id:@room['room']['id']
         }
       }
-    expect{post '/api/v1/rooms',headers:@headers,params:valid_params}.to change(Room,:count).by(+1)
-    expect(response.status).to eq(201)
-
+      post '/api/v1/room_users',headers:@headers,params:room_params
+      expect(response.status).to eq(201)
+    end
   end
+
   # it 'ルームを編集' do
   #   FactoryBot.create(:room_create)
   #   time=Time.current
