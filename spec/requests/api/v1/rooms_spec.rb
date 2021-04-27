@@ -17,6 +17,7 @@ describe 'RoomAPI' do
     rooms=JSON.parse(response.body)
     expect(response.status).to eq(200)
     expect(rooms['rooms'].length).to eq(10)
+    puts(rooms['rooms'])
   end
   context 'ルームを作成し、入室' do
     it '新しいROOMを作成' do
@@ -29,11 +30,13 @@ describe 'RoomAPI' do
           }
         }
       expect{post '/api/v1/rooms',headers:@headers,params:valid_params}.to change(Room,:count).by(+1)
-      @room = JSON.parse(response.body)
       expect(response.status).to eq(201)
+    end
+    it 'ルームに入る' do
+      room = FactoryBot.create(:room)
       room_params={
         user:{
-          room_id:@room['room']['id']
+          room_id:room.id
         }
       }
       post '/api/v1/room_users',headers:@headers,params:room_params
