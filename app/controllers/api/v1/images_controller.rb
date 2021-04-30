@@ -1,20 +1,36 @@
 module Api
   module V1
     class ImagesController < ApplicationController
+      jwt_authenticate only: [:update]
       require 'base64'
 
+      @@images = [
+        { 'id': 0, 'path': "public/images/avaters/pose_pien_uruuru_man.png" }
+      ]
+
       def index
-        images = [ { 'id': 0, 'path': "public/images/avaters/pose_pien_uruuru_man.png" } ]
-        render status: 200, json: images
+        render status: 200, json: @@images
       end
 
       def show
-        images = [
-          { 'id': 0, 'path': "public/images/avaters/pose_pien_uruuru_man.png" }
-        ]
-        image_path = images[params[:id].to_i][:path]
+        image_path = @@images[params[:id].to_i][:path]
         image_base64 = convert_base64(image_path)
         render status: 200, json: image_base64
+      end
+
+      def update
+        avater = Avater.find_by(user_id: @current_user.id)
+        if avater.present?
+          avater.path = @@images[params[:id].to_i][:path]
+        else
+          avater = Avater.new(user_id: @current_user.id, path: @@images[params[:id].to_i][:path])
+        end
+
+        if avater.save
+          render status: 200, json: avater
+        else
+          render status: 500, json: { error: "update error" }
+        end
       end
 
       private

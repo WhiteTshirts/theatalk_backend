@@ -5,7 +5,6 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-#rikuiwasaki
 
 20.times do |n|
   User.create(:name=>"name#{n}",:password=>"password#{n}")
@@ -28,6 +27,3 @@ Tag.create(:name=>"天気")
 Tag.create(:name=>"ペット")
 Tag.create(:name=>"スポーツ")
 
-
-
-#rikuiwasaki

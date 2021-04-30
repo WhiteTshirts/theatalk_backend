@@ -1,7 +1,7 @@
 module Api
     module V1
         class RoomsController < ApplicationController
-            include JwtAuthenticator 
+            include JwtAuthenticator
             jwt_authenticate 
             before_action :set_room, only: [:update]
 
