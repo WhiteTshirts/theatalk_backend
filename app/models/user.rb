@@ -10,7 +10,7 @@ class User < ApplicationRecord
 	has_many :user_dms
 	has_many :dms, through: :user_dms
 	has_many :room_histories
-    has_many :rooms, through: :room_histories
+	has_many :rooms, through: :room_histories
 	validates :password, presence: true
 	validates :name, presence: true, uniqueness: true
 
@@ -30,6 +30,5 @@ class User < ApplicationRecord
 	def following?(other_user)
 		self.followings.include?(other_user)
 	end
-
 
 end
