@@ -5,12 +5,12 @@ module Api
       require 'base64'
 
       @@images = [
-        { 'id': 0, 'path': "public/images/avaters/dog.png" },
-        { 'id': 1, 'path': "public/images/avaters/cat.png" },
-        { 'id': 2, 'path': "public/images/avaters/whale.png" },
-        { 'id': 3, 'path': "public/images/avaters/sheep.png" },
-        { 'id': 4, 'path': "public/images/avaters/penguin.png" },
-        { 'id': 5, 'path': "public/images/avaters/dragon.png" }
+        { 'id': 0, 'path': "public/images/avaters/dog.jpeg" },
+        { 'id': 1, 'path': "public/images/avaters/cat.jpeg" },
+        { 'id': 2, 'path': "public/images/avaters/whale.jpeg" },
+        { 'id': 3, 'path': "public/images/avaters/sheep.jpeg" },
+        { 'id': 4, 'path': "public/images/avaters/penguin.jpeg" },
+        { 'id': 5, 'path': "public/images/avaters/dragon.jpeg" }
       ]
 
       def index
