@@ -25,7 +25,7 @@ module Api
                         room_tag.save
                     end
 
-                    render status:201, json: { room: room }
+                    render status:201, json: room,include:'**',user:@current_user
                 else 
                     render status:500, json: { error: "save error" }
                 end
