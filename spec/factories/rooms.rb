@@ -8,7 +8,7 @@ FactoryBot.define do
   end
   factory :room do
     name{"room"}
-    youtube_id{"dadadfasd"}
+    youtube_id{"youtube_id"}
     admin_id{1}
     start_time{Time.current}
   end
