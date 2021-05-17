@@ -9,7 +9,6 @@ describe 'RoomAPI' do
     json = JSON.parse(response.body)
     @token = json["token"]
     @headers = {'Authorization' => "Bearer #{@token}"}
-    @room
   end
   it '全てのRoomを取得' do
     FactoryBot.create_list(:room_create,10)
@@ -17,7 +16,6 @@ describe 'RoomAPI' do
     rooms=JSON.parse(response.body)
     expect(response.status).to eq(200)
     expect(rooms['rooms'].length).to eq(10)
-    puts(rooms['rooms'])
   end
   context 'ルームを作成し、入室' do
     it '新しいROOMを作成' do
