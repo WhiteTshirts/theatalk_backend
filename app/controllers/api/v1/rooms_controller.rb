@@ -17,10 +17,10 @@ module Api
                 room = Room.new(room_info)
                 if room.save && @current_user.update_attribute(:room_id, room.id)
                     # save したら、 RoomsTagsと紐付けを行う
-                    @tag = @current_user.tags
+                    @tags = room_info[:tags]
                     tag_array = []
 
-                    @tag.each do |t|
+                    @tags.each do |t|
                         room_tag = RoomsTag.new(room_id: room.id, tag_id: t.id)
                         room_tag.save
                     end
@@ -57,7 +57,7 @@ module Api
             end
 
             def room_params
-                params.require(:room).permit(:name, :youtube_id, :is_private, :start_time, :password)
+                params.require(:room).permit(:name, :youtube_id, :is_private, :start_time, :password, :tags)
             end
         end
     end
