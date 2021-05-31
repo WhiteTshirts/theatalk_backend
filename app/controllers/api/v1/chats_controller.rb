@@ -16,11 +16,11 @@ module Api
 			end
 
 			def create
-				chat_info = chat_params
+				chat_info =
 				chat_info[:user_id] = @current_user.id
 				chat_info[:room_id] = @current_user.room_id                
 				@new_chat = Chat.new(chat_info)
-				@new_chat.save
+				@new_chat.save!
 				RoomChannel.broadcast_to("room_#{chat_info[:room_id]}", chat_info)
 				render status:201, json: { chat: chat_info  }
 
