@@ -4,7 +4,7 @@ module Api
 			jwt_authenticate
 
 			def index
-				if @current_user.room_id.nil?
+				if @current_user.room_id == nil
 					render status:401
 					return
 				end
@@ -16,13 +16,17 @@ module Api
 			end
 
 			def create
-				chat_info =
+				chat_info = chat_params
 				chat_info[:user_id] = @current_user.id
 				chat_info[:room_id] = @current_user.room_id                
 				@new_chat = Chat.new(chat_info)
-				@new_chat.save!
-				RoomChannel.broadcast_to("room_#{chat_info[:room_id]}", chat_info)
-				render status:201, json: { chat: chat_info  }
+				if @new_chat.save
+
+					RoomChannel.broadcast_to("room_#{chat_info[:room_id]}", chat_info)
+					render status:201, json: { chat: chat_info  }
+				else
+					render staus:422
+				end
 
 			end
 			def update
