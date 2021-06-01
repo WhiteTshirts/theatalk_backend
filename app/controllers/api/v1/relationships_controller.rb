@@ -18,13 +18,10 @@ module Api
         no_user && return
         same_user && return
         @following = @current_user.follow(@user)
-        if @following.save
-          @current_user.increment!(:follow_number)
-          @user.increment!(:follower_number)
-          render status: 201,json: {user:@user}
-        else
-          render status: 500
-        end
+        @following.save!
+        @current_user.increment!(:follow_number)
+        @user.increment!(:follower_number)
+        render status: 201,json: {user:@user}
       end
 
       def destroy
@@ -34,13 +31,10 @@ module Api
         if @following.nil?
           render status: 404
         else
-          if @following.destroy
-            @current_user.increment!(:follow_number, -1)
-            @user.increment!(:follower_number, -1)
-            render status: 204
-          else
-            render status: 500
-          end
+          @following.destroy!
+          @current_user.increment!(:follow_number, -1)
+          @user.increment!(:follower_number, -1)
+          render status: 204
         end
 
       end

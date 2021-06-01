@@ -31,11 +31,8 @@ module Api
           avater = Avater.new(user_id: @current_user.id, path: @@images[params[:id].to_i][:path])
         end
 
-        if avater.save
-          render status: 200, json: avater
-        else
-          render status: 500, json: { error: "update error" }
-        end
+        avater.save!
+        render status: 200, json: avater
       end
 
       private
