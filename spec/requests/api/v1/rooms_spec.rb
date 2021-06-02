@@ -5,10 +5,7 @@ require 'rails_helper'
 describe 'RoomAPI' do
   before do
     @user = FactoryBot.create(:user)
-    post '/api/v1/login',params:{user:{name:@user.name,password:@user.password}}
-    json = JSON.parse(response.body)
-    @token = json["token"]
-    @headers = {'Authorization' => "Bearer #{@token}"}
+    sign_in(@user)
   end
   it '全てのRoomを取得' do
     FactoryBot.create_list(:room_create,10)

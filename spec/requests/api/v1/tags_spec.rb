@@ -4,10 +4,7 @@ require 'rails_helper'
 describe 'UserAPI' do
   before do
     @user = FactoryBot.create(:user)
-    post '/api/v1/login',params:{user:{name:@user.name,password:@user.password}}
-    json = JSON.parse(response.body)
-    @token = json["token"]
-    @headers = {'Authorization' => "Bearer #{@token}"}
+    sign_in(@user)
   end
   it '全てのTagを取得' do
     get '/api/v1/tags#index',headers:@headers
