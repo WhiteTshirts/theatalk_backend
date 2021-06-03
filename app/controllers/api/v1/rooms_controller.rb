@@ -7,7 +7,7 @@ module Api
 
             def index
                 rooms = Room.all.order(created_at: :desc).select(:id, :name, :admin_id, :youtube_id, :password, :is_private,:start_time, :created_at, :updated_at,:viewer) #where('viewer > ?',-1)
-                render status:200, json: rooms
+                render status: 200, json: rooms
             end
 
             def create
@@ -17,17 +17,14 @@ module Api
                 room = Room.new(room_info)
                 if room.save && @current_user.update_attribute(:room_id, room.id)
                     # save したら、 RoomsTagsと紐付けを行う
-                    @tags = room_info[:tags]
-                    tag_array = []
-
-                    @tags.each do |t|
+                    tags_params.each do |t|
                         room_tag = RoomsTag.new(room_id: room.id, tag_id: t.id)
                         room_tag.save
                     end
 
-                    render status:201, json: { room: room }
+                    render status: 201, json: { room: room }
                 else 
-                    render status:500, json: { error: "save error" }
+                    render status: 500, json: { error: "save error" }
                 end
             end
             
@@ -57,7 +54,11 @@ module Api
             end
 
             def room_params
-                params.require(:room).permit(:name, :youtube_id, :is_private, :start_time, :password, :tags)
+                params.require(:room).permit(:name, :youtube_id, :is_private, :start_time, :password)
+            end
+
+            def tags_params
+                params.require(:room).permit(tags: [])
             end
         end
     end
