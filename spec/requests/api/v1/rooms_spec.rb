@@ -27,7 +27,20 @@ describe 'RoomAPI' do
       expect{post '/api/v1/rooms',headers:@headers,params:valid_params}.to change(Room,:count).by(+1)
       expect(response.status).to eq(201)
     end
-    it 'ルームに入る' do
+    it '非公開の新しいROOMを作成' do
+      valid_params={
+        room:{
+          name:'room1',
+          youtube_id:'1',
+          is_private:true,
+          password:"password",
+          start_time:Time.current
+          }
+        }
+      expect{post '/api/v1/rooms',headers:@headers,params:valid_params}.to change(Room,:count).by(+1)
+      expect(response.status).to eq(201)
+    end
+    it 'ルームに入ったあと、ルーム内にいることを確認' do
       room = FactoryBot.create(:room)
       room_params={
         user:{
@@ -36,6 +49,10 @@ describe 'RoomAPI' do
       }
       post '/api/v1/room_users',headers:@headers,params:room_params
       expect(response.status).to eq(201)
+      get '/api/v1/room_users',headers:@headers
+      json = JSON.parse(response.body)
+      expect(response.status).to eq(200)
+
     end
   end
 

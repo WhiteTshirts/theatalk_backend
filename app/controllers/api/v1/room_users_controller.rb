@@ -9,7 +9,7 @@ module Api
 				if @current_user.room_id.nil?
 					render status: 401
 				else
-					users = User.join(:relationship).where(room_id: @current_user.room_id).order(updated_at: :desc)
+					users = User.joins(:relationships).where(room_id: @current_user.room_id).order(updated_at: :desc)
 					render status: 200, json: users,include: '**',user: @current_user, adapter: :json
 				end
 

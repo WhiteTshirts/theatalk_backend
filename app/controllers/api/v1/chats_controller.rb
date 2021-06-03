@@ -31,11 +31,11 @@ module Api
 			end
 			def update
 				chat = Chat.find(params[:id])
-				if chat.user_id == @current_user.id
+				if chat.user_id != @current_user.id
+					render status:401, json: {error: "invalid user"}
+				else
 					updated_chat = Chat.update(chat_params)
 					render status:200, json: { chat: updated_chat  }
-				else
-					render status:401, json: {error: "invalid user"}
 				end
 			end
 			private
