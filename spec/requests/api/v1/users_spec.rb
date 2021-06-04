@@ -2,13 +2,14 @@
 
 require 'rails_helper'
 describe 'UserAPI' do
+  before do
+    @user = FactoryBot.create(:user)
+    sign_in(@user)
+  end
   it '全てのUserを取得' do
-    FactoryBot.create_list(:user_create,10)
-    get '/api/v1/users#index'
+    get '/api/v1/users#index',headers:@headers
     users=JSON.parse(response.body)
-    
     expect(response.status).to eq(200)
-    expect(users['data']['users'].length).to eq(10)
   end
   it '新しいUserを作成' do
     valid_params={
@@ -18,15 +19,17 @@ describe 'UserAPI' do
                     room_id:'1'
                   }
                 }
-    expect{post '/api/v1/users',params:valid_params}.to change(User,:count).by(+1)
-    expect(response.status).to eq(200)
+    expect{post '/api/v1/users',headers:@headers,params:valid_params}.to change(User,:count).by(+1)
+    expect(response.status).to eq(201)
   end
   it '他のユーザ情報閲覧' do
-    created_user=FactoryBot.build(:user_create)
-    get "/api/v1/users/2"
-    user=JSON.parse(response.body)
+    created_user=FactoryBot.create(:user_create)
+    get "/api/v1/users/#{@user.id}",headers:@headers
+    user=JSON.parse(response.body)["user"]
     expect(response.status).to eq(200)
-    expect(user['data']['user'].name).to eq(created_user.name)
+    expect(user["name"]).to eq(@user.name)
+    expect(user["room_id"]).to eq(@user.room_id)
+    expect(user["follow_number"]).to eq(@user.follow_number)
   end
 
   

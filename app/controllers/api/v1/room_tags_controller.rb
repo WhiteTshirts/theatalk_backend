@@ -14,11 +14,8 @@ module Api
 
             def create
                 room_tag = RoomsTag.new(room_tag_params)
-                if room_tag.save
-                    render status:201, json: {  room_tag: room_tag }
-                else
-                    render status:500, json: { error: room_tag.errors  }
-                end
+                room_tag.save!
+                render status:201, json: {  room_tag: room_tag }
             end
 
             

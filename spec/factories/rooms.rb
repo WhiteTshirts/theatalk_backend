@@ -1,5 +1,9 @@
-#rikuiwasaki
 FactoryBot.define do
+  factory :room,class: Room do
+    name {"test_room"}
+    admin_id{"1"}
+    youtube_id{"youtube_id"}
+  end
   factory :room_create,class: Room do
     name {|n|"room#{n}"}
     youtube_id{|n|"#{n}"}
@@ -8,4 +12,3 @@ FactoryBot.define do
     start_time{Time.current}
   end
 end
-#rikuiwasaki

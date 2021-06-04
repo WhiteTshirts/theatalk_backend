@@ -6,8 +6,8 @@ module Api
             before_action :set_room, only: [:update]
 
             def index
-                rooms = Room.all.order(created_at: :desc).select(:id, :name, :admin_id, :youtube_id, :password, :is_private,:start_time, :created_at, :updated_at,:viewer) #where('viewer > ?',-1)
-                render status: 200, json: rooms
+                rooms = Room.all.order(created_at: :desc)
+                render status:200,json: rooms,include: '**', user: @current_user
             end
 
             def create
@@ -22,7 +22,7 @@ module Api
                         room_tag.save
                     end
 
-                    render status: 201, json: { room: room }
+                    render status:201, json: room,include:'**',user:@current_user
                 else 
                     render status: 500, json: { error: "save error" }
                 end
@@ -31,7 +31,7 @@ module Api
             def update
                 if @current_user.id == @room.admin_id
                     if @room.update(room_params)
-                        render status:200, json: room
+                        render status:200, json: {room: room}
                     else
                         render status:500, json: { error: @room.erros  }
                     end
@@ -42,7 +42,7 @@ module Api
             
             def show
                 if room = Room.find_by(params[:id])
-                    render status:200, json: room
+                    render status:200, json:room
                 else
                     render status:404
                 end

@@ -6,8 +6,13 @@ module Api
 			# ルームに入室しているユーザ一覧を取得(入室した順番に取得)
 
 			def index 
-				users = User.join(:relationship).where(room_id: @current_user.room_id).order(updated_at: :desc)
-				render status: 200, json: users,include: '**',user: @current_user, adapter: :json
+				if @current_user.room_id.nil?
+					render status: 401
+				else
+					users = User.joins(:relationships).where(room_id: @current_user.room_id).order(updated_at: :desc)
+					render status: 200, json: users,include: '**',user: @current_user, adapter: :json
+				end
+
 			end
 
 			def create

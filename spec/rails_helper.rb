@@ -63,5 +63,6 @@ RSpec.configure do |config|
   # config.filter_gems_from_backtrace("gem name")
   #rikuiwasaki
   config.include FactoryBot::Syntax::Methods
+  config.include AuthenticationHelper, type: :request
   #rikuiwasaki
 end

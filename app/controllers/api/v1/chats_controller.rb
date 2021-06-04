@@ -11,7 +11,7 @@ module Api
 				if chats = Chat.where(room_id: @current_user.room_id).order(updated_at: :desc)
 					render status:200, json: chats, root: "chats", adapter: :json
 				else
-					render status:500, json: { error: "can't get Info"}
+					render status:404, json: { error: "can't get Info"}
 				end
 			end
 
@@ -21,23 +21,21 @@ module Api
 				chat_info[:room_id] = @current_user.room_id                
 				@new_chat = Chat.new(chat_info)
 				if @new_chat.save
-					chat_info[:name]=@current_user.name
+
 					RoomChannel.broadcast_to("room_#{chat_info[:room_id]}", chat_info)
 					render status:201, json: { chat: chat_info  }
-				else 
-					render status:500, json: {  error: "please send message" }
+				else
+					render staus:422
 				end
+
 			end
 			def update
 				chat = Chat.find(params[:id])
-				if chat.user_id == @current_user.id
-					if updated_chat = Chat.update(chat_params)
-						render status:200, json: { chat: updated_chat  }
-					else
-						render status:500, json: { error: "can't get Info" }
-					end
-				else
+				if chat.user_id != @current_user.id
 					render status:401, json: {error: "invalid user"}
+				else
+					updated_chat = Chat.update(chat_params)
+					render status:200, json: { chat: updated_chat  }
 				end
 			end
 			private
@@ -47,7 +45,6 @@ module Api
 				def chat_params
 					params.require(:chat).permit(:text)
 				end
-		#rikuiwasaki
 		end
 		
 	end

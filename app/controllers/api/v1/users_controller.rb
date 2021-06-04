@@ -31,11 +31,9 @@ module Api
           end
 
           def update
-              if @current_user.update_attributes(user_params)
-                  render status:200, json: { user: @user  }
-                else
-                  render status:500, json: { error: @user.errors }
-              end
+              @current_user.update_attributes!(user_params)
+              render status:200, json: { user: @user  }
+  
           end
 
           def user_params
