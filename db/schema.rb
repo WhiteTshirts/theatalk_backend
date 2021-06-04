@@ -133,8 +133,10 @@ ActiveRecord::Schema.define(version: 2021_05_19_124124) do
     t.integer "follow_number", default: 0
     t.integer "follower_number", default: 0
     t.string "img_path"
+    t.string "avatar"
   end
 
+  add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "relationships", "users"
   add_foreign_key "relationships", "users", column: "follow_id"
   add_foreign_key "room_histories", "rooms"
