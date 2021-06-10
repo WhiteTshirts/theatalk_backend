@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_30_030533) do
+ActiveRecord::Schema.define(version: 2021_05_19_124124) do
 
   create_table "avaters", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id"
@@ -62,7 +62,7 @@ ActiveRecord::Schema.define(version: 2021_04_30_030533) do
   create_table "rooms", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name"
     t.integer "admin_id"
-    t.boolean "is_private"
+    t.boolean "is_private", null: false
     t.string "password"
     t.timestamp "start_time"
     t.datetime "created_at", null: false
