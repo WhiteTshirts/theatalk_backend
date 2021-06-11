@@ -8,6 +8,7 @@ module Api
         rooms = Room.where(admin_id: user.id)
         render status: 200, json: rooms,include: '**', user: @current_user
       end
+      
     end
   end
 end

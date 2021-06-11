@@ -3,14 +3,14 @@ module Api
 		class RoomUsersController < ApplicationController
 			jwt_authenticate 
 
-			def index 
+			def index
+				# TODO: 多分ここ修正できる
 				if @current_user.room_id.nil?
 					render status: 401
 				else
 					users = User.joins(:relationships).where(room_id: @current_user.room_id).order(updated_at: :desc)
-					render status: 200, json: users,include: '**',user: @current_user, adapter: :json
+					render status: 200, json: users, include: '**', user: @current_user, adapter: :json
 				end
-
 			end
 
 			# TODO: 要リファクタリング

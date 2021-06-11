@@ -6,7 +6,7 @@ module Api
 
       def show
         @room = Room.where(id: @room_ids)
-        render status:200, json: { room: @room  }
+        render status: 200, json: { room: @room  }
       end
 
       private

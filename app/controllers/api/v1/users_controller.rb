@@ -5,7 +5,7 @@ module Api
       
       def index 
         users = User.all
-        render status: 200, json: users,user:@current_user,scope: :detail
+        render status: 200, json: users, user: @current_user, scope: :detail
       end
 
       def show
@@ -18,15 +18,15 @@ module Api
         if @user.save
           jwt_token = encode(@user.id)
           response.headers['X-Authentication-Token'] = jwt_token
-          render status:201, json: { user: @user, token: jwt_token  }
+          render status: 201, json: { user: @user, token: jwt_token  }
         else
-          render status:409, json:{user:@user.errors}
+          render status: 409, json:{user:@user.errors}
         end
       end
 
       def update
         @current_user.update_attributes!(user_params)
-        render status:200, json: { user: @user  }
+        render status: 200, json: { user: @user  }
       end
 
       private

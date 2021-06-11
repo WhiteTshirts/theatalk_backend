@@ -2,12 +2,11 @@ module Api
 	module V1
 		class RoomTagsController < ApplicationController
 			jwt_authenticate
-			before_action :set_room_tag, only: [:destroy]
 
 			def create
 				room_tag = RoomsTag.new(room_tag_params)
 				room_tag.save!
-				render status:201, json: {  room_tag: room_tag }
+				render status: 201, json: {  room_tag: room_tag }
 			end
 
 			def destroy
@@ -19,7 +18,7 @@ module Api
 			def show
 				tag = Tag.find(params[:id])
 				rooms = Room.joins(:tags).where("tag_id = #{tag.id}")
-				render status:200, json: { rooms: rooms  }
+				render status: 200, json: { rooms: rooms  }
 			end
             
 			private

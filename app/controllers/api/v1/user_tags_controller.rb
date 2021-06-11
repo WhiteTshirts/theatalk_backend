@@ -15,7 +15,7 @@ module Api
         tag_user_info[:user_id] = @current_user.id
         tag_user = TagsUser.new(tag_user_info)
         tag_user.save!
-        render status:201, json: { tag_user: tag_user }
+        render status: 201, json: { tag_user: tag_user }
       end
       
       def show

@@ -4,13 +4,13 @@ module Api
 
       def index 
         tags = Tag.order(created_at: :desc)
-        render status:200, json: tags
+        render status: 200, json: tags
       end
     
       def create
         tag = Tag.new(tag_params)
         tag.save!
-        render status:201, json: tag
+        render status: 201, json: tag
       end
 
       def search

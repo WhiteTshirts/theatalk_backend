@@ -4,6 +4,7 @@ module Api
       jwt_authenticate only: [:update]
       require 'base64'
 
+      # TODO: DBに置く
       @@images = [
         { 'id': 0, 'path': "public/images/avaters/dog.jpeg" },
         { 'id': 1, 'path': "public/images/avaters/cat.jpeg" },
