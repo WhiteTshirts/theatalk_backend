@@ -1,7 +1,6 @@
 module Api
   module V1
     class RelationshipsController < ApplicationController
-      include JwtAuthenticator
       jwt_authenticate
       before_action :set_user
 

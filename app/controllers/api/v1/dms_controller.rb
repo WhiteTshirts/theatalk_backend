@@ -1,7 +1,6 @@
 module Api
   module V1
     class DmsController < ApplicationController
-      include JwtAuthenticator 
       jwt_authenticate
       def index
         dms = @current_user.dms
