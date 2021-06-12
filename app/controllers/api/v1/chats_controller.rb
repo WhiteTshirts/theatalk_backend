@@ -1,6 +1,6 @@
 module Api
 	module V1
-		class ChatsController < ApplicationController            #rikuiwasaki
+		class ChatsController < ApplicationController
 			jwt_authenticate
 
 			def index
@@ -22,6 +22,8 @@ module Api
 				@new_chat = Chat.new(chat_info)
 				if @new_chat.save
 					chat_info[:name]=@current_user.name
+					info = { type: "comment", chat: chat_info }
+
 					RoomChannel.broadcast_to("room_#{chat_info[:room_id]}", chat_info)
 					render status:201, json: { chat: chat_info  }
 				else 
@@ -47,7 +49,6 @@ module Api
 				def chat_params
 					params.require(:chat).permit(:text)
 				end
-		#rikuiwasaki
 		end
 		
 	end
