@@ -15,7 +15,7 @@ module Api
 				room = Room.new(room_info)
 				# TODO: 要リファクタリング
 				room.save!
-				@current_user.update_attribute(:room_id, room.id)
+				@current_user.update_attribute!(:room_id, room.id)
 				tags_params.each do |t|
 					room_tag = RoomsTag.new(room_id: room.id, tag_id: t.id)
 					room_tag.save!
