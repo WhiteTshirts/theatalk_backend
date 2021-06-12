@@ -24,7 +24,7 @@ module Api
 					chat_info[:name]=@current_user.name
 					info = { type: "comment", chat: chat_info }
 
-					RoomChannel.broadcast_to("room_#{chat_info[:room_id]}", chat_info)
+					RoomChannel.broadcast_to("room_#{chat_info[:room_id]}", info)
 					render status:201, json: { chat: chat_info  }
 				else 
 					render status:500, json: {  error: "please send message" }
