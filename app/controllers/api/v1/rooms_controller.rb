@@ -13,9 +13,9 @@ module Api
 				room_info[:admin_id] = @current_user.id
 				room_info[:viewer] = 0
 				room = Room.new(room_info)
-				# TODO: 要リファクタリング
+				# TODO: 要リファクタリング　ちょっとここupdate_attribute!にするとエラーしてしまう
 				room.save!
-				@current_user.update_attribute!(:room_id, room.id)
+				@current_user.update_attribute(:room_id, room.id)
 				tags_params.each do |t|
 					room_tag = RoomsTag.new(room_id: room.id, tag_id: t.id)
 					room_tag.save!

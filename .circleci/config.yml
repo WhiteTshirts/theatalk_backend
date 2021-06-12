@@ -11,6 +11,9 @@ jobs:
     - run:
         name: up_service.sh #　db create migrate後にdocker-compose up
         command: bash up_service.sh
+    - run:
+        name: run spec
+        command:  docker-compose run web rake spec
     #- run:
     #    name: exec rspec #　rspec実行 テスト結果をHTML出力
     #    command: docker-compose run app bundle exec rspec --format p --format html --out test-results/rspec.html
