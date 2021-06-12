@@ -21,12 +21,10 @@ module Api
 				chat_info[:user_id] = @current_user.id
 				chat_info[:room_id] = @current_user.room_id                
 				@new_chat = Chat.new(chat_info)
-				if @new_chat.save
-					RoomChannel.broadcast_to("room_#{chat_info[:room_id]}", chat_info)
-					render status: 201, json: { chat: chat_info  }
-				else
-					render staus: 422
-				end
+				@new_chat.save!
+				RoomChannel.broadcast_to("room_#{chat_info[:room_id]}", chat_info)
+				render status: 201, json: { chat: chat_info  }
+
 			end
 
 			def update
@@ -39,16 +37,6 @@ module Api
 				end
 			end
 
-			private
-
-			# つかってなくない？？wowwow
-			def set_chat
-				@chat = Chat.find(params[:id])
-			end
-
-			def chat_params
-				params.require(:chat).permit(:text)
-			end
 		end
 		
 	end

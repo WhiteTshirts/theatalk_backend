@@ -15,13 +15,11 @@ module Api
 
       def create
         @user = User.new(user_params)
-        if @user.save
-          jwt_token = encode(@user.id)
-          response.headers['X-Authentication-Token'] = jwt_token
-          render status: 201, json: { user: @user, token: jwt_token  }
-        else
-          render status: 409, json:{user:@user.errors}
-        end
+        @user.save!
+        jwt_token = encode(@user.id)
+        response.headers['X-Authentication-Token'] = jwt_token
+        render status: 201, json: { user: @user, token: jwt_token  }
+
       end
 
       def update

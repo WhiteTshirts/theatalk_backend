@@ -14,15 +14,13 @@ module Api
 				room_info[:viewer] = 0
 				room = Room.new(room_info)
 				# TODO: 要リファクタリング
-				if room.save && @current_user.update_attribute(:room_id, room.id)
-					tags_params.each do |t|
-						room_tag = RoomsTag.new(room_id: room.id, tag_id: t.id)
-						room_tag.save!
-					end
-					render status: 201, json: room, include:'**', user: @current_user
-				else 
-					render status: 500, json: { error: "save error" }
+				room.save!
+				@current_user.update_attribute(:room_id, room.id)
+				tags_params.each do |t|
+					room_tag = RoomsTag.new(room_id: room.id, tag_id: t.id)
+					room_tag.save!
 				end
+				render status: 201, json: room, include:'**', user: @current_user
 			end
 			
 			def update
