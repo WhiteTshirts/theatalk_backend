@@ -21,7 +21,7 @@ module Api
       def show
         image_path = @@images[params[:id].to_i][:path]
         image_base64 = convert_base64(image_path)
-        render status: 200, json: image_base64
+        render status: 200, json: { avater: { id: params[:id], image: image_base64 } }
       end
 
       def update

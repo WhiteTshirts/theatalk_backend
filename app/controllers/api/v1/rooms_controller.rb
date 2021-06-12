@@ -27,7 +27,7 @@ module Api
 				room = Room.find_by(params[:id])
 				if @current_user.id == room.admin_id
 					room.update!(room_params)
-					render status: 200, json: {room: room}
+					render status: 200, json: { room: room }
 				else
 					render status: 401, json: { error: "invalid user"  }
 				end
