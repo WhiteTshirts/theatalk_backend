@@ -9,5 +9,5 @@ RSpec.describe Tag, type: :model do
     expect(tag).to be_valid
   end
 
-  pending "add some examples to (or delete) #{__FILE__}"
+  # pending "add some examples to (or delete) #{__FILE__}"
 end

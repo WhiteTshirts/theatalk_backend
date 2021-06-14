@@ -4,6 +4,7 @@ module Api
       jwt_authenticate only: [:update]
       require 'base64'
 
+      # TODO: DBに置く
       @@images = [
         { 'id': 0, 'path': "public/images/avaters/dog.jpeg" },
         { 'id': 1, 'path': "public/images/avaters/cat.jpeg" },
@@ -20,7 +21,7 @@ module Api
       def show
         image_path = @@images[params[:id].to_i][:path]
         image_base64 = convert_base64(image_path)
-        render status: 200, json: image_base64
+        render status: 200, json: { avater: { id: params[:id], image: image_base64 } }
       end
 
       def update
