@@ -3,6 +3,7 @@ class ApplicationController < ActionController::API
   rescue_from StandardError, :with => :error_500
   rescue_from ActiveRecord::RecordNotFound, with: :error_404
   rescue_from ActiveRecord::RecordNotSaved, with: :error_422
+  
   def error_500(message="Server Error")
     render status: 500, json: { errors: message }
   end

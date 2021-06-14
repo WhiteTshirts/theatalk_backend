@@ -13,9 +13,9 @@ module Api
               return 
             end
           end
-          render status: 440 ,json: {error: "you are invalid user."}
+          render status: 440, json: { error: "you are invalid user." }
         else
-          render status: 404, json: {error: "not found"}
+          render status: 404, json: { error: "not found" }
           return
         end
       end
@@ -32,7 +32,7 @@ module Api
         @dm_msg = DmMessage.find(params[:id])
         if @dm_msg.user_id == @current_user.id
           @dm_msg.destroy
-          render 400
+          render status: 400
         else
           #invalid user
         end
