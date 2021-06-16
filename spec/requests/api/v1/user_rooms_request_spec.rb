@@ -3,10 +3,7 @@ require 'rails_helper'
 RSpec.describe "UserRooms", type: :request do
   before do
     @user = FactoryBot.create(:user)
-    post '/api/v1/login',params:{user:{name:@user.name,password:@user.password}}
-    json = JSON.parse(response.body)
-    @token = json["token"]
-    @headers = {'Authorization' => "Bearer #{@token}"}
+    sign_in(@user)
   end
   describe "GET roomusers" do
     it "ルーム入室前 401" do

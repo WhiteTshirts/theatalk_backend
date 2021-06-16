@@ -11,7 +11,7 @@ class User < ApplicationRecord
 	has_many :dms, through: :user_dms
 	has_many :room_histories
 	has_many :rooms, through: :room_histories
-	validates :password, presence: true
+	validates :password, presence: true, on: :create
 	validates :name, presence: true, uniqueness: true
 
 	def follow(other_user)

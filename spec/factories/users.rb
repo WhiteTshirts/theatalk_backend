@@ -4,8 +4,8 @@ FactoryBot.define do
     password {|n|"fuga#{n}"}
   end
   factory :user,class: User do
-    name {"test_user"}
-    password {"hoge"}
+    name {"fuga"}
+    password {"hogehoge"}
   end
   
 end

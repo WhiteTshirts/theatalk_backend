@@ -2,7 +2,8 @@ module Api
   module V1
     class DmMessagesController < ApplicationController
       jwt_authenticate
-      before_action :set_dm_msg, only: [:destroy]
+
+      # ここリファクタリングしたい
       def index
         if dm = Dm.find_by(id: params[:dm_id])
           dm.users.each do |user|
@@ -12,9 +13,9 @@ module Api
               return 
             end
           end
-          render status: 440 ,json: {error: "you are invalid user."}
+          render status: 440, json: { error: "you are invalid user." }
         else
-          render status: 404, json: {error: "not found"}
+          render status: 404, json: { error: "not found" }
           return
         end
       end
@@ -23,24 +24,26 @@ module Api
         dm_info = dm_msg_params
         dm_info[:dm_id] = params[:dm_id]
         dm_msg = @current_user.dm_messages.new(dm_info)
-        dm_msg.save
+        dm_msg.save!
         render status: 201, json: dm_msg, root: "dm_msg", adapter: :json
       end
+
       def destroy
-        if @dm_msg.user_id  == @current_user.id
+        @dm_msg = DmMessage.find(params[:id])
+        if @dm_msg.user_id == @current_user.id
           @dm_msg.destroy
-          render 400
+          render status: 400
         else
           #invalid user
         end
       end
+      
       private
-      def set_dm_msg
-        @dm_msg = DmMessage.find(params[:id])
-      end
+
       def dm_msg_params
         params.require(:dm).permit(:message)
       end
+      
     end
   end
 end
