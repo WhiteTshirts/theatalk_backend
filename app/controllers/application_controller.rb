@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::API
   include JwtAuthenticator
-  #rescue_from StandardError, :with => :error_500
+  rescue_from StandardError, :with => :error_500
   rescue_from ActiveRecord::RecordNotFound, with: :error_404
   rescue_from ActiveRecord::RecordNotSaved, with: :error_422
   
