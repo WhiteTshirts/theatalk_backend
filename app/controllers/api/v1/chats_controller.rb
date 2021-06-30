@@ -19,11 +19,13 @@ module Api
 			def create
 				chat_info = chat_params
 				chat_info[:user_id] = @current_user.id
-				chat_info[:room_id] = @current_user.room_id                
+				chat_info[:room_id] = @current_user.room_id 
 				@new_chat = Chat.new(chat_info)
 				@new_chat.save!
-				RoomChannel.broadcast_to("room_#{chat_info[:room_id]}", chat_info)
-				render status: 201, json: { chat: chat_info  }
+				chat_info[:name] = @current_user.name               
+				info = { type: "comment", chat: chat_info }
+				RoomChannel.broadcast_to("room_#{chat_info[:room_id]}", info)
+				render status: 201, json: { chat: @new_chat  }
 
 			end
 
@@ -36,7 +38,9 @@ module Api
 					render status: 200, json: { chat: updated_chat  }
 				end
 			end
-
+			def chat_params
+				params.require(:chat).permit(:text)
+			end
 		end
 		
 	end
