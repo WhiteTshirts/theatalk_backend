@@ -27,6 +27,10 @@ module Api
 				room = Room.find_by(params[:id])
 				if @current_user.id == room.admin_id
 					room.update!(room_params)
+					tags_params[:tags].each do |t|
+						room_tag = RoomsTag.new(room_id: room.id, tag_id: t[:id])
+						room_tag.save!
+					end
 					render status: 200, json: { room: room }
 				else
 					render status: 401, json: { error: "invalid user"  }
