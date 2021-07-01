@@ -16,8 +16,8 @@ module Api
 				# TODO: 要リファクタリング　ちょっとここupdate_attribute!にするとエラーしてしまう
 				room.save!
 				@current_user.update_attributes!(room_id: room.id)
-				tags_params.each do |t|
-					room_tag = RoomsTag.new(room_id: room.id, tag_id: t.id)
+				tags_params[:tags].each do |t|
+					room_tag = RoomsTag.new(room_id: room.id, tag_id: t[:id])
 					room_tag.save!
 				end
 				render status: 201, json: room, include:'**', user: @current_user
@@ -45,7 +45,7 @@ module Api
 			end
 
 			def tags_params
-				params.require(:room).permit(tags: [])
+				params.require(:room).permit(tags: [:id,:name])
 			end
 		end
 	end
