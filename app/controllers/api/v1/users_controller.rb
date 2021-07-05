@@ -30,9 +30,10 @@ module Api
       end
       def avater
         avater = Avater.find_by(user_id:params[:id])
-        avater_id = avater.present?? avater.id : 0
-        image_path = @@images[avater_id][:path]
-        render status: 201, json: { avater: { id: avater_id, image: convert_base64(image_path) } }
+        avater_id = avater.present?? avater.path : "0"
+        
+        image_path = @@images[avater_id.to_i][:path]
+        render status: 201, json: { avater: { id: avater_id.to_i, image: convert_base64(image_path) } }
       end
 
       def update
