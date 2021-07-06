@@ -7,9 +7,9 @@ describe 'RoomAPI' do
   end
 
   it '全てのRoomを取得' do
-    FactoryBot.create_list(:room_create,10)
-    get '/api/v1/rooms',headers:@headers
-    rooms=JSON.parse(response.body)
+    FactoryBot.create_list(:room_create, 10)
+    get '/api/v1/rooms', headers: @headers
+    rooms = JSON.parse(response.body)
     expect(response.status).to eq(200)
     expect(rooms['rooms'].length).to eq(10)
   end
@@ -18,14 +18,14 @@ describe 'RoomAPI' do
 
     it '新しいROOMを作成' do
       valid_params={
-        room:{
+        room: {
           name:'room1',
           youtube_id:'1',
           is_private:false,
           start_time:Time.current
           }
         }
-      expect{post '/api/v1/rooms',headers:@headers,params:valid_params}.to change(Room,:count).by(+1)
+      expect{ post '/api/v1/rooms', headers: @headers, params: valid_params }.to change(Room, :count).by(+1)
       expect(response.status).to eq(201)
     end
 
@@ -36,10 +36,11 @@ describe 'RoomAPI' do
           youtube_id:'1',
           is_private:true,
           password:"password",
-          start_time:Time.current
+          start_time:Time.current,
+          tags: []
           }
         }
-      expect{post '/api/v1/rooms',headers:@headers,params:valid_params}.to change(Room,:count).by(+1)
+      expect{ post '/api/v1/rooms', headers: @headers, params: valid_params }.to change(Room, :count).by(+1)
       expect(response.status).to eq(201)
     end
 
@@ -55,6 +56,31 @@ describe 'RoomAPI' do
       get '/api/v1/room_users',headers:@headers
       json = JSON.parse(response.body)
       expect(response.status).to eq(200)
+    end
+  end
+
+  context '返り値判定' do
+    it 'タグが正しいか' do
+      tags = FactoryBot.create_list(:tag_create, 2)
+      params = {
+        room: {
+          name: "room_name",
+          youtube_id: "1", 
+          is_private: true,
+          start_time: "2015-11-12 00:00:00+0100",
+          tags: [{
+                  id: "#{tags[0].id}",
+                },
+                {
+                  id: "#{tags[1].id}",
+                }]
+        }
+      }
+      post "/api/v1/rooms", headers: @headers, params: params
+      json = JSON.parse(response.body)
+      get "/api/v1/rooms/#{json["room"]["id"]}", headers: @headers
+      json = JSON.parse(response.body)
+      expect(json["room"]["tags"].length).to eq(2)
     end
   end
 

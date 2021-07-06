@@ -19,5 +19,5 @@ class ApplicationController < ActionController::API
   def error_409(message="Conflict")
     render status: 409, json: { errors: message }
   end
-
+  
 end
