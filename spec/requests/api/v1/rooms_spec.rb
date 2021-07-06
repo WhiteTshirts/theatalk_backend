@@ -58,4 +58,32 @@ describe 'RoomAPI' do
     end
   end
 
+  context '返り値判定' do
+    it 'タグが正しいか' do
+      FactoryBot.create_list(:tag_create, 2)
+      params = {
+        room: {
+          name: "room_name",
+          youtube_id: "1", 
+          is_private: true,
+          start_time: "2015-11-12 00:00:00+0100",
+          tags: [{
+                  id: 1,
+                  name: "tag1"
+                },
+                {
+                  id: 2,
+                  name: "tag2"
+                }]
+        }
+      }
+      post "/api/v1/rooms", headers: @headers, params: params
+      json = JSON.parse(response.body)
+      get "/api/v1/rooms/#{json["room"]["id"]}", headers: @headers
+      json = JSON.parse(response.body)
+      print(json["rooms"][0]["tags"].length)
+      expect(json["rooms"][0]["tags"].length).to eq(2)
+    end
+  end
+
 end
