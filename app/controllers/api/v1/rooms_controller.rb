@@ -39,8 +39,8 @@ module Api
 			end
 			
 			def show
-				room = Room.find_by(params[:id])
-				render status: 200, json:room
+				room = Room.where(id:params[:id])
+				render status: 200, json:room, include: '**', user: @current_user
 			end
 
 			private

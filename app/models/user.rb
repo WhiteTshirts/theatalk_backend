@@ -11,6 +11,7 @@ class User < ApplicationRecord
 	has_many :dms, through: :user_dms
 	has_many :room_histories
 	has_many :rooms, through: :room_histories
+	has_one :avater
 	validates :password, presence: true, on: :create
 	validates :name, presence: true, uniqueness: true
 

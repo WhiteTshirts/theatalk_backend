@@ -27,13 +27,13 @@ module Api
       def update
         avater = Avater.find_by(user_id: @current_user.id)
         if avater.present?
-          avater.path = @@images[params[:id].to_i][:path]
+          avater.path = params[:id]
         else
-          avater = Avater.new(user_id: @current_user.id, path: @@images[params[:id].to_i][:path])
+          avater = Avater.new(user_id: @current_user.id, path: params[:id])
         end
 
         avater.save!
-        render status: 200, json: avater
+        render status: 200, json: { avater:{ id:params[:id] } }
       end
 
       private

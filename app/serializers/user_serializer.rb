@@ -23,6 +23,9 @@ class UserSerializer < ActiveModel::Serializer
   def rooms
     Room.where(admin_id:object.id).select(:youtube_id,:admin_id,:id,:name)
   end
+  def avater_id
+    object.avater.present?? object.avater.path.to_i : 0
+  end
   attribute :is_following, if: -> {@user != nil}
   attribute :is_follower, if: -> {@user != nil}
   attribute :room_id, if: -> { @scope=="detail" || @scope=="all"}
@@ -34,4 +37,5 @@ class UserSerializer < ActiveModel::Serializer
   attribute :followers, if: ->{ @scope=="all"}
   attribute :tags, if: ->{@scope=="all"}
   attribute :rooms, if: ->{@scope=="all"}
+  attribute :avater_id, if: ->{ @scope =="detail"|| @scope=="all"}
 end
