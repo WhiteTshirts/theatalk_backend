@@ -16,7 +16,7 @@ module Api
 				# TODO: 要リファクタリング
 				room.save!
 				@current_user.update_attributes!(room_id: room.id)
-				tags_params[:tags].each do |t|
+				(tags_params[:tags] || []).each do |t|
 					room_tag = RoomsTag.new(room_id: room.id, tag_id: t[:id])
 					room_tag.save!
 				end
@@ -29,7 +29,7 @@ module Api
 					room.update!(room_params)
 					RoomsTag.where(room_id: room.id).destroy_all
 
-					tags_params[:tags].each do |t|
+					(tags_params[:tags] || []).each do |t|
 						room_tag = RoomsTag.new(room_id: room.id, tag_id: t[:id])
 						room_tag.save!
 					end
@@ -40,8 +40,8 @@ module Api
 			end
 			
 			def show
-				room = Room.where(id: params[:id])
-				render status: 200, json: room, include: '**', user: @current_user
+				room = Room.find_by(params[:id])
+				render status: 200, json: room, serializer: RoomSerializer
 			end
 
 			private
@@ -51,7 +51,7 @@ module Api
 			end
 
 			def tags_params
-				params.require(:room).permit(tags: [:id,:name])
+				params.require(:room).permit(tags: [:id, :name])
 			end
 		end
 	end
