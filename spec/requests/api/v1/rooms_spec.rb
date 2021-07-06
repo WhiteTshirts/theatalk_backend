@@ -81,7 +81,6 @@ describe 'RoomAPI' do
       json = JSON.parse(response.body)
       get "/api/v1/rooms/#{json["room"]["id"]}", headers: @headers
       json = JSON.parse(response.body)
-      print(json["rooms"][0]["tags"].length)
       expect(json["rooms"][0]["tags"].length).to eq(2)
     end
   end
